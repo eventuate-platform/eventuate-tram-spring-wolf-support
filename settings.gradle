@@ -1,0 +1,3 @@
+rootProject.name = 'eventuate-tram-spring-wolf-support'
+
+include 'eventuate-tram-spring-wolf-support'
