@@ -1,0 +1,72 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+          url "https://plugins.gradle.org/m2/"
+        }
+        eventuateMavenRepoUrl.split(',').each { repoUrl -> maven { url repoUrl } }
+    }
+    dependencies {
+        classpath "io.eventuate.plugins.gradle:eventuate-plugins-gradle-publish:$eventuatePluginsGradleVersion"
+    }
+}
+
+
+allprojects {
+    group = "io.eventuate.tram.spring.springwolf"
+}
+
+apply plugin: "io.eventuate.plugins.gradle.publish.EventuatePublish"
+
+allprojects {
+
+    repositories {
+        mavenCentral()
+        eventuateMavenRepoUrl.split(',').each { repoUrl -> maven { url repoUrl } }
+    }
+
+    if (project.name.endsWith("-bom")) {
+        apply plugin: 'java-platform'
+    } else {
+
+        apply plugin: 'java-library'
+
+        java {
+            toolchain {
+                languageVersion.set(JavaLanguageVersion.of(17))
+            }
+        }
+        dependencies {
+
+            test {
+                useJUnitPlatform()
+            }
+        }
+
+    }
+}
+
+gradle.projectsEvaluated {
+    tasks.register('aggregateJavaDocs', Javadoc) {
+        description = 'Aggregated Javadoc API documentation of all subprojects.'
+        group = JavaBasePlugin.DOCUMENTATION_GROUP
+
+        destinationDir file("$buildDir/docs/javadoc")
+    }
+
+    tasks.register('aggregateJavaDocsJar', Jar) {
+        dependsOn project.aggregateJavaDocs
+//        classifier = 'javadoc'
+        from 'build/docs/javadoc'
+    }
+
+    artifacts {
+        archives project.aggregateJavaDocsJar
+    }
+
+    javadocJar.dependsOn(aggregateJavaDocs)
+    generateMetadataFileForMavenPublication.dependsOn(project.aggregateJavaDocsJar)
+
+}
+
+
