@@ -37,10 +37,12 @@ allprojects {
             }
         }
         dependencies {
+            testImplementation platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+            testImplementation(platform("io.eventuate.platform:eventuate-platform-dependencies:$eventuatePlatformVersion"))
 
-            test {
-                useJUnitPlatform()
-            }
+        }
+        test {
+            useJUnitPlatform()
         }
 
     }

@@ -12,12 +12,12 @@ import java.util.stream.Collectors;
 
 import static io.eventuate.tram.spring.springwolf.MessageClassScanner.findConcreteImplementorsOf;
 
-public class OperationsFromEventPublisherScanner {
+public class OperationsFromEventPublisherScanner implements EventuateTramOperationsScanner {
 
   @Autowired
   private ApplicationContext ctx;
 
-  Map<String, ? extends Operation> scan() {
+  public Map<String, Operation> scan() {
     return ctx.getBeansOfType(DomainEventPublisherForAggregate.class).values().stream()
         .collect(Collectors.toMap(
             ep -> ep.getClass().getName(),

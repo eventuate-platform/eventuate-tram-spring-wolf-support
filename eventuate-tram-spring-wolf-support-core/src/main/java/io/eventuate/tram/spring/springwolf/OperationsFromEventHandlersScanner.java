@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class OperationsFromEventHandlersScanner {
+public class OperationsFromEventHandlersScanner implements EventuateTramOperationsScanner {
 
   @Autowired
   private ApplicationContext ctx;

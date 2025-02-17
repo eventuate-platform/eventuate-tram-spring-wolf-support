@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ChannelsFromEventHandlersScanner {
+public class ChannelsFromEventHandlersScanner implements EventuateTramChannelsScanner{
 
   @Autowired
   private ApplicationContext ctx;
@@ -20,7 +20,7 @@ public class ChannelsFromEventHandlersScanner {
   @Autowired
   private SpringWolfMessageFactory springWolfMessageFactory;
 
-  public Map<String, ChannelObject> makeChannelsFromEventHandlers() {
+  public Map<String, ChannelObject> scan() {
     List<DomainEventHandlers> domainEventHandlers = DomainEventDispatcherHacks.getDomainEventHandlers(ctx);
 
     Map<String, List<DomainEventHandler>> aggregateTypeToEvents = domainEventHandlers.stream()

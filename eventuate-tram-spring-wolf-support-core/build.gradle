@@ -5,6 +5,11 @@ dependencies {
     implementation "io.eventuate.tram.core:eventuate-tram-spring-events-starter:0.36.0.BUILD-SNAPSHOT"
 
     testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    testImplementation "io.rest-assured:rest-assured"
+    testImplementation "io.eventuate.tram.core:eventuate-tram-spring-in-memory:0.36.0.BUILD-SNAPSHOT"
+    testImplementation "io.eventuate.tram.sagas:eventuate-tram-sagas-spring-participant-starter"
+    testImplementation "io.eventuate.examples.common:eventuate-examples-common-money-jakarta9:$eventuateCommonExamplesVersion"
 
 }
 

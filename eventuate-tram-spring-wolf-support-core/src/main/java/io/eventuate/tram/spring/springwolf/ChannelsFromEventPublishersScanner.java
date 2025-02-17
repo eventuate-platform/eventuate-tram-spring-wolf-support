@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ChannelsFromEventPublishersScanner {
+public class ChannelsFromEventPublishersScanner implements EventuateTramChannelsScanner {
 
   @Autowired
   private ApplicationContext ctx;
@@ -19,7 +19,7 @@ public class ChannelsFromEventPublishersScanner {
   @Autowired
   private SpringWolfMessageFactory springWolfMessageFactory;
 
-  Map<String, ChannelObject> findPublishingChannels() {
+  public Map<String, ChannelObject> scan() {
     List<DomainEventPublisherForAggregate> eventPublishers = ctx.getBeansOfType(DomainEventPublisherForAggregate.class).values().stream().toList();
     return eventPublishers.stream()
         .collect(Collectors.toMap(

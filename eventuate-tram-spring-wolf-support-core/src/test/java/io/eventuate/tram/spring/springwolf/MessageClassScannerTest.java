@@ -1,5 +1,7 @@
 package io.eventuate.tram.spring.springwolf;
 
+import io.eventuate.tram.spring.springwolf.application.events.CustomerCreatedEvent;
+import io.eventuate.tram.spring.springwolf.application.events.CustomerEvent;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
@@ -10,8 +12,8 @@ public class MessageClassScannerTest {
 
   @Test
   public void shouldFindConcreteEventImplementations() {
-    Set<Class<?>> implementations = MessageClassScanner.findConcreteImplementorsOf(TestBaseEvent.class);
-    assertThat(implementations).isEqualTo(Set.of(TestConcreteEvent.class));
+    Set<Class<?>> implementations = MessageClassScanner.findConcreteImplementorsOf(CustomerEvent.class);
+    assertThat(implementations).isEqualTo(Set.of(CustomerCreatedEvent.class));
   }
 
 }
