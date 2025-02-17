@@ -1,5 +1,6 @@
 package io.eventuate.tram.spring.springwolf;
 
+import io.eventuate.tram.events.publisher.DomainEventPublisherForAggregate;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
@@ -19,7 +20,7 @@ public class ChannelsFromEventPublishersScanner {
   private SpringWolfMessageFactory springWolfMessageFactory;
 
   Map<String, ChannelObject> findPublishingChannels() {
-    List<EventPublisher> eventPublishers = ctx.getBeansOfType(EventPublisher.class).values().stream().toList();
+    List<DomainEventPublisherForAggregate> eventPublishers = ctx.getBeansOfType(DomainEventPublisherForAggregate.class).values().stream().toList();
     return eventPublishers.stream()
         .collect(Collectors.toMap(
             ep -> ep.getAggregateClass().getName(),

@@ -1,5 +1,6 @@
 package io.eventuate.tram.spring.springwolf;
 
+import io.eventuate.tram.events.publisher.DomainEventPublisherForAggregate;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
@@ -17,14 +18,14 @@ public class OperationsFromEventPublisherScanner {
   private ApplicationContext ctx;
 
   Map<String, ? extends Operation> scan() {
-    return ctx.getBeansOfType(EventPublisher.class).values().stream()
+    return ctx.getBeansOfType(DomainEventPublisherForAggregate.class).values().stream()
         .collect(Collectors.toMap(
             ep -> ep.getClass().getName(),
             this::makeOperationFromEventPublisher
         ));
   }
 
-  private Operation makeOperationFromEventPublisher(EventPublisher ep) {
+  private Operation makeOperationFromEventPublisher(DomainEventPublisherForAggregate ep) {
     return Operation.builder()
         .channel(ChannelReference.builder()
             .ref("#/channels/" + ep.getAggregateClass().getName())
