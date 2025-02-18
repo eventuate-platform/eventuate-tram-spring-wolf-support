@@ -12,7 +12,6 @@ public class DomainEventDispatcherHacks {
   static List<DomainEventHandlers> getDomainEventHandlers(ApplicationContext ctx) {
     List<DomainEventDispatcher> dispatchers = ctx.getBeansOfType(DomainEventDispatcher.class).values().stream().toList();
 
-    System.out.println(dispatchers);
     List<DomainEventHandlers> domainEventHandlers = dispatchers.stream()
         .map(dispatcher -> getDomainEventHandlers(dispatcher))
         .collect(Collectors.toList());
