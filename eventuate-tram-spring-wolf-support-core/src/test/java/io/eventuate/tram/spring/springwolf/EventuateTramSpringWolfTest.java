@@ -3,6 +3,7 @@ package io.eventuate.tram.spring.springwolf;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.eventuate.tram.spring.inmemory.TramInMemoryConfiguration;
 import io.eventuate.tram.spring.springwolf.application.events.EventConfiguration;
+import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.CustomerService;
 import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.RequestAsyncResponseConfiguration;
 import io.eventuate.tram.spring.springwolf.asyncapi.AsyncApiDocument;
 import io.eventuate.tram.spring.springwolf.asyncapi.Channel;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -30,7 +32,10 @@ public class EventuateTramSpringWolfTest {
   @EnableAutoConfiguration
   @Import({TramInMemoryConfiguration.class, EventuateSpringWolfConfiguration.class, RequestAsyncResponseConfiguration.class, EventConfiguration.class})
   public static class Config {
-    // TODO Exception handler for CustomerCreditLimitExceededException
+    @Bean
+    public CustomerService customerService() {
+      return new CustomerService();
+    }
   }
 
   @LocalServerPort

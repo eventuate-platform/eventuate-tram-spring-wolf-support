@@ -15,11 +15,6 @@ public class EventuateCommandHandlerBeanPostProcessor implements BeanPostProcess
   }
 
   @Override
-  public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-    return bean;
-  }
-
-  @Override
   public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
     Class<?> clazz = bean.getClass();
     for (Method method : clazz.getMethods()) {

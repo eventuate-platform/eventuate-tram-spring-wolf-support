@@ -10,7 +10,9 @@ import io.eventuate.tram.sagas.participant.SagaCommandHandlersBuilder;
 import io.eventuate.tram.spring.springwolf.CommandClassExtractor;
 import io.eventuate.tram.spring.springwolf.CommandHandlerInfo;
 import io.eventuate.tram.spring.springwolf.EventuateCommandHandler;
-import org.springframework.context.Lifecycle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.SmartLifecycle;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -20,7 +22,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class EventuateCommandDispatcher implements Lifecycle {
+public class EventuateCommandDispatcher implements SmartLifecycle {
+  private Logger logger = LoggerFactory.getLogger(getClass());
   private final SagaCommandDispatcherFactory sagaCommandDispatcherFactory;
   private List<CommandHandlerInfo> commandHandlers = new ArrayList<>();
   private boolean running = false;
@@ -31,11 +34,13 @@ public class EventuateCommandDispatcher implements Lifecycle {
   }
 
   public void registerHandlerMethod(Object bean, EventuateCommandHandler eventuateCommandHandler, Method method) {
+    logger.info("!!!!!!!!!!!!!!!! Registering command handler method: {}", method);
     commandHandlers.add(new CommandHandlerInfo(bean, eventuateCommandHandler, method));
   }
 
   @Override
   public void start() {
+    logger.info("!!!! Starting EventuateCommandDispatcher");
     Map<String, List<CommandHandlerInfo>> groupedCommandHandlers= commandHandlers.stream()
         .collect(Collectors.groupingBy(ch -> ch.eventuateCommandHandler().subscriberId()));
     this.dispatchers = groupedCommandHandlers.entrySet()
@@ -43,7 +48,7 @@ public class EventuateCommandDispatcher implements Lifecycle {
         .map(e -> sagaCommandDispatcherFactory
             .make(e.getKey(), makeCommandHandlers(e.getValue())))
         .toList();
-    dispatchers.forEach(SagaCommandDispatcher::initialize);
+    logger.info("!!!! Started EventuateCommandDispatcher {}", dispatchers);
     running = true;
 
   }

@@ -1,6 +1,7 @@
 package io.eventuate.tram.spring.springwolf;
 
 import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.CustomerCommandHandler;
+import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.CustomerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,13 +21,18 @@ public class ChannelsFromCommandHandlerScannerTest {
     @Configuration
     static class TestConfig {
         @Bean
-        public CustomerCommandHandler customerCommandHandler() {
-            return new CustomerCommandHandler();
+        public CustomerCommandHandler customerCommandHandler(CustomerService customerService) {
+            return new CustomerCommandHandler(customerService);
         }
 
         @Bean
         public ChannelsFromCommandHandlerScanner channelsFromCommandHandlerScanner() {
             return new ChannelsFromCommandHandlerScanner();
+        }
+
+        @Bean
+        CustomerService customerService() {
+            return new CustomerService();
         }
 
     }

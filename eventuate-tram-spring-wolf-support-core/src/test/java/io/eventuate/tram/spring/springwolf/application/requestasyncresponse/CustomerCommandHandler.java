@@ -16,6 +16,12 @@ import static io.eventuate.tram.commands.consumer.CommandHandlerReplyBuilder.wit
 
 public class CustomerCommandHandler {
 
+  private final CustomerService customerService;
+
+  public CustomerCommandHandler(CustomerService customerService) {
+    this.customerService = customerService;
+  }
+
   public CommandHandlers commandHandlerDefinitions() {
     return SagaCommandHandlersBuilder
             .fromChannel("customerService")
@@ -27,7 +33,7 @@ public class CustomerCommandHandler {
   public Message reserveCredit(CommandMessage<ReserveCreditCommand> cm) {
     ReserveCreditCommand cmd = cm.getCommand();
     try {
-      doSomething(cm);
+      customerService.reserveCredit(cmd.customerId(), cmd.orderId(), cmd.orderTotal());
       return withSuccess(new CustomerCreditReserved());
     } catch (CustomerNotFoundException e) {
       return withFailure(new CustomerNotFound());
@@ -36,9 +42,5 @@ public class CustomerCommandHandler {
     }
   }
 
-
-  private void doSomething(CommandMessage<ReserveCreditCommand> cm) {
-
-  }
 
 }
