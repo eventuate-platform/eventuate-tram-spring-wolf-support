@@ -18,4 +18,14 @@ public class RequestAsyncResponseConfiguration {
                                                      SagaCommandDispatcherFactory sagaCommandDispatcherFactory) {
         return sagaCommandDispatcherFactory.make("customerCommandDispatcher", target.commandHandlerDefinitions());
     }
+
+    @Bean
+    public EventuateCommandHandlerBeanPostProcessor eventuateCommandHandlerBeanPostProcessor(EventuateCommandDispatcher eventuateCommandDispatcher) {
+        return new EventuateCommandHandlerBeanPostProcessor(eventuateCommandDispatcher);
+    }
+
+    @Bean
+    public EventuateCommandDispatcher eventuateCommandDispatcher(SagaCommandDispatcherFactory sagaCommandDispatcherFactory) {
+        return new EventuateCommandDispatcher(sagaCommandDispatcherFactory);
+    }
 }

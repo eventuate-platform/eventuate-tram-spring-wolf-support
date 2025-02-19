@@ -5,6 +5,7 @@ import io.eventuate.tram.commands.consumer.CommandHandlers;
 import io.eventuate.tram.commands.consumer.CommandMessage;
 import io.eventuate.tram.messaging.common.Message;
 import io.eventuate.tram.sagas.participant.SagaCommandHandlersBuilder;
+import io.eventuate.tram.spring.springwolf.EventuateCommandHandler;
 import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.commands.ReserveCreditCommand;
 import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.replies.CustomerCreditLimitExceeded;
 import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.replies.CustomerCreditReserved;
@@ -22,6 +23,7 @@ public class CustomerCommandHandler {
             .build();
   }
 
+  @EventuateCommandHandler(subscriberId="customerCommandDispatcher", channel="customerService")
   public Message reserveCredit(CommandMessage<ReserveCreditCommand> cm) {
     ReserveCreditCommand cmd = cm.getCommand();
     try {
@@ -33,6 +35,7 @@ public class CustomerCommandHandler {
       return withFailure(new CustomerCreditLimitExceeded());
     }
   }
+
 
   private void doSomething(CommandMessage<ReserveCreditCommand> cm) {
 

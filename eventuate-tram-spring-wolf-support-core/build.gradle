@@ -3,6 +3,7 @@ dependencies {
     implementation 'io.github.springwolf:springwolf-core:1.10.0'
     runtimeOnly 'io.github.springwolf:springwolf-ui:1.10.0'
     implementation "io.eventuate.tram.core:eventuate-tram-spring-events-starter:0.36.0.BUILD-SNAPSHOT"
+    implementation "io.eventuate.tram.core:eventuate-tram-commands:0.36.0.BUILD-SNAPSHOT"
 
     testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
     testImplementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
@@ -12,4 +13,3 @@ dependencies {
     testImplementation "io.eventuate.examples.common:eventuate-examples-common-money-jakarta9:$eventuateCommonExamplesVersion"
 
 }
-

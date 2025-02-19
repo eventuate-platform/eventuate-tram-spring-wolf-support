@@ -1,35 +1,25 @@
 package io.eventuate.tram.spring.springwolf;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.eventuate.tram.commands.consumer.CommandDispatcher;
+import io.eventuate.tram.spring.inmemory.TramInMemoryConfiguration;
+import io.eventuate.tram.spring.springwolf.application.events.EventConfiguration;
+import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.RequestAsyncResponseConfiguration;
 import io.eventuate.tram.spring.springwolf.asyncapi.AsyncApiDocument;
 import io.eventuate.tram.spring.springwolf.asyncapi.Channel;
 import io.eventuate.tram.spring.springwolf.asyncapi.Operation;
-import java.util.Map;
-import io.eventuate.tram.events.publisher.DomainEventPublisher;
-import io.eventuate.tram.events.subscriber.DomainEventDispatcher;
-import io.eventuate.tram.events.subscriber.DomainEventDispatcherFactory;
-import io.eventuate.tram.sagas.participant.SagaCommandDispatcherFactory;
-import io.eventuate.tram.spring.inmemory.TramInMemoryConfiguration;
-import io.eventuate.tram.spring.springwolf.application.events.CustomerEventConsumer;
-import io.eventuate.tram.spring.springwolf.application.events.CustomerEventPublisher;
-import io.eventuate.tram.spring.springwolf.application.events.CustomerEventPublisherImpl;
-import io.eventuate.tram.spring.springwolf.application.events.EventConfiguration;
-import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.CustomerCommandHandler;
-import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.RequestAsyncResponseConfiguration;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -68,6 +58,42 @@ public class EventuateTramSpringWolfTest {
     assertCustomerChannelExists(doc);
     assertCustomerChannelAcceptsCustomerCreatedEvent(doc);
     assertCustomerChannelOperationsAreConfigured(doc);
+
+    assertCustomerServiceChannelExists(doc);
+    assertCustomerServiceChannelOperationsAreConfigured(doc);
+  }
+
+  private void assertCustomerServiceChannelOperationsAreConfigured(AsyncApiDocument doc) {
+
+    var customerCommandHandler = "commandHandlers-customerService";
+    var customerServiceChannel = "customerService";
+
+    Map<String, Operation> operations = doc.getOperations();
+    assertThat(operations)
+        .as("Operations map should exist")
+        .isNotNull()
+        .containsKey(customerCommandHandler);
+
+    Operation subscriberOperation = operations.get(customerCommandHandler);
+    assertThat(subscriberOperation.getAction())
+        .as("Subscriber should have 'receive' action")
+        .isEqualTo("receive");
+
+    assertThat(subscriberOperation.getChannel())
+        .as("Subscriber channel reference should exist")
+        .isNotNull();
+
+    assertThat(subscriberOperation.getChannel().getRef())
+        .as("Subscriber should reference Customer channel")
+        .contains(customerServiceChannel);
+
+  }
+
+  private void assertCustomerServiceChannelExists(AsyncApiDocument doc) {
+    assertThat(doc.getChannels())
+        .as("Channels map should exist")
+        .isNotNull()
+        .containsKey("customerService");
   }
 
   private AsyncApiDocument getSpringWolfDocs() throws IOException {

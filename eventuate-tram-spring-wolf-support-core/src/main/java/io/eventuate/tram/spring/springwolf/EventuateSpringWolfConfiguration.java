@@ -50,4 +50,13 @@ public class EventuateSpringWolfConfiguration {
     return new SpringWolfMessageFactory();
   }
 
+  @Bean
+  ChannelsFromCommandHandlerScanner channelsFromCommandHandlerScanner() {
+    return new ChannelsFromCommandHandlerScanner();
+  }
+
+  @Bean
+  OperationsFromCommandHandlerScanner operationsFromCommandHandlerScanner() {
+    return new OperationsFromCommandHandlerScanner();
+  }
 }
