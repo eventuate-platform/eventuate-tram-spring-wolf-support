@@ -4,11 +4,14 @@ import io.eventuate.examples.common.money.Money;
 import io.eventuate.tram.commands.producer.CommandProducer;
 import io.eventuate.tram.spring.inmemory.TramInMemoryConfiguration;
 import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.commands.ReserveCreditCommand;
+import io.eventuate.tram.testutil.TestMessageConsumer;
+import io.eventuate.tram.testutil.TestMessageConsumerFactory;
 import io.eventuate.util.test.async.Eventually;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -25,6 +28,15 @@ public class CommandHandlingTest {
   @Import({TramInMemoryConfiguration.class, RequestAsyncResponseConfiguration.class})
   public static class Config {
 
+    @Bean
+    TestMessageConsumerFactory testMessageConsumerFactory() {
+      return new TestMessageConsumerFactory();
+    }
+
+    @Bean
+    TestMessageConsumer testConsumer(TestMessageConsumerFactory testMessageConsumerFactory) {
+      return testMessageConsumerFactory.make();
+    }
   }
 
   @Autowired
@@ -33,12 +45,20 @@ public class CommandHandlingTest {
   @MockitoBean
   private CustomerService customerService;
 
+  @Autowired
+  private TestMessageConsumer testConsumer;
+
   @Test
   public void shouldHandleCommand() {
-    commandProducer.send("customerService", new ReserveCreditCommand(101L, 100L, new Money("12.34")), "ReplyTo", Map.of());
+    var commandId = commandProducer.send("customerService", new ReserveCreditCommand(101L, 100L, new Money("12.34")),
+        testConsumer.getReplyChannel(), Map.of());
+
     Eventually.eventually(() -> {
       verify(customerService).reserveCredit(101L, 100L, new Money("12.34"));
     });
+
+    testConsumer.assertHasReplyTo(commandId);
+
   }
 
 }
