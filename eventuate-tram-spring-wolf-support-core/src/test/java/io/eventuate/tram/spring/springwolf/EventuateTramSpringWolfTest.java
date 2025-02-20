@@ -3,6 +3,7 @@ package io.eventuate.tram.spring.springwolf;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.eventuate.tram.spring.inmemory.TramInMemoryConfiguration;
 import io.eventuate.tram.spring.springwolf.application.events.EventConfiguration;
+import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.CustomerCommandHandler;
 import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.CustomerService;
 import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.RequestAsyncResponseConfiguration;
 import io.eventuate.tram.spring.springwolf.asyncapi.AsyncApiDocument;
@@ -70,7 +71,7 @@ public class EventuateTramSpringWolfTest {
 
   private void assertCustomerServiceChannelOperationsAreConfigured(AsyncApiDocument doc) {
 
-    var customerCommandHandler = "commandHandlers-customerService";
+    var customerCommandHandler = CustomerCommandHandler.class.getName() + ".reserveCredit";
     var customerServiceChannel = "customerService";
 
     Map<String, Operation> operations = doc.getOperations();
