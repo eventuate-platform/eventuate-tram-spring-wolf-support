@@ -1,6 +1,9 @@
 package io.eventuate.tram.spring.springwolf;
 
 import io.eventuate.tram.commands.common.Command;
+import io.eventuate.tram.commands.consumer.annotations.EventuateCommandHandler;
+import io.eventuate.tram.spring.commands.consumer.CommandClassExtractor;
+import io.eventuate.tram.spring.commands.consumer.CommandHandlerInfo;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
@@ -33,7 +36,7 @@ public class ChannelsFromCommandHandlerScanner implements EventuateTramChannelsS
 
   private Map<String, ChannelObject> makeChannelsFromCommandHandlers(List<CommandHandlerInfo> commandHandlers) {
     return commandHandlers.stream()
-        .collect(Collectors.groupingBy((CommandHandlerInfo eventuateCommandHandler) -> eventuateCommandHandler.eventuateCommandHandler().channel()))
+        .collect(Collectors.groupingBy((CommandHandlerInfo eventuateCommandHandler) -> eventuateCommandHandler.getEventuateCommandHandler().channel()))
         .entrySet()
         .stream()
         .collect(Collectors.toMap(
@@ -46,7 +49,7 @@ public class ChannelsFromCommandHandlerScanner implements EventuateTramChannelsS
     return ChannelObject.builder()
         .channelId(key)
         .messages(commandHanders.stream()
-            .map(ch -> CommandClassExtractor.extractCommandClass(ch.method()))
+            .map(ch -> CommandClassExtractor.extractCommandClass(ch.getMethod()))
             .collect(Collectors.toMap(
                 Class::getName, // key mapper
                 this::makeMessageReference // value mapper

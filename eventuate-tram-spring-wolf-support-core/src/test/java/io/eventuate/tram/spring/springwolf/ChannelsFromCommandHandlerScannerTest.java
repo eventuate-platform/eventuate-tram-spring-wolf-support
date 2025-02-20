@@ -1,5 +1,6 @@
 package io.eventuate.tram.spring.springwolf;
 
+import io.eventuate.tram.spring.commands.consumer.CommandHandlerInfo;
 import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.CustomerCommandHandler;
 import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.CustomerService;
 import org.junit.jupiter.api.Test;
@@ -55,7 +56,7 @@ public class ChannelsFromCommandHandlerScannerTest {
         assertEquals(1, handlers.size());
 
         CommandHandlerInfo handler = handlers.get(0);
-        assertEquals("customerCommandDispatcher", handler.eventuateCommandHandler().subscriberId());
-        assertEquals("customerService", handler.eventuateCommandHandler().channel());
+        assertEquals("customerCommandDispatcher", handler.getEventuateCommandHandler().subscriberId());
+        assertEquals("customerService", handler.getEventuateCommandHandler().channel());
     }
 }

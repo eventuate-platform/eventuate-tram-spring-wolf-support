@@ -2,7 +2,7 @@ package io.eventuate.tram.spring.springwolf.application.requestasyncresponse;
 
 
 import io.eventuate.tram.commands.consumer.CommandMessage;
-import io.eventuate.tram.spring.springwolf.EventuateCommandHandler;
+import io.eventuate.tram.commands.consumer.annotations.EventuateCommandHandler;
 import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.commands.ReserveCreditCommand;
 import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.replies.CustomerCreditLimitExceeded;
 import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.replies.CustomerCreditReserved;

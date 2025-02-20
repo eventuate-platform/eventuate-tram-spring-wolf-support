@@ -4,7 +4,6 @@ import io.eventuate.tram.events.subscriber.DomainEventDispatcher;
 import io.eventuate.tram.events.subscriber.DomainEventHandlers;
 import org.springframework.context.ApplicationContext;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,19 +11,9 @@ public class DomainEventDispatcherHacks {
   static List<DomainEventHandlers> getDomainEventHandlers(ApplicationContext ctx) {
     List<DomainEventDispatcher> dispatchers = ctx.getBeansOfType(DomainEventDispatcher.class).values().stream().toList();
 
-    List<DomainEventHandlers> domainEventHandlers = dispatchers.stream()
-        .map(dispatcher -> getDomainEventHandlers(dispatcher))
+    return dispatchers.stream()
+        .map(DomainEventDispatcher::getDomainEventHandlers)
         .collect(Collectors.toList());
-    return domainEventHandlers;
   }
 
-  private static DomainEventHandlers getDomainEventHandlers(DomainEventDispatcher dispatcher) {
-    try {
-        Field field = DomainEventDispatcher.class.getDeclaredField("domainEventHandlers");
-        field.setAccessible(true);
-        return (DomainEventHandlers) field.get(dispatcher);
-    } catch (NoSuchFieldException | IllegalAccessException e) {
-        throw new RuntimeException("Failed to access domainEventHandlers field", e);
-    }
-}
 }

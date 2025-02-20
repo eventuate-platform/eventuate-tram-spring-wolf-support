@@ -1,6 +1,8 @@
 package io.eventuate.tram.spring.springwolf;
 
 import io.eventuate.tram.commands.common.CommandMessageHeaders;
+import io.eventuate.tram.spring.commands.consumer.CommandClassExtractor;
+import io.eventuate.tram.spring.commands.consumer.CommandHandlerInfo;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
@@ -37,7 +39,7 @@ public class OperationsFromCommandHandlerScanner implements EventuateTramOperati
         .stream()
         .collect(Collectors.toMap(
             OperationsFromCommandHandlerScanner::getOperationId,
-            ch -> makeOperationsFromCommandHandlers(ch.eventuateCommandHandler().channel(), ch)
+            ch -> makeOperationsFromCommandHandlers(ch.getEventuateCommandHandler().channel(), ch)
         ));
   }
 
@@ -49,9 +51,9 @@ public class OperationsFromCommandHandlerScanner implements EventuateTramOperati
         .operationId(getOperationId(ch))
         .description("my event handler")
         .action(OperationAction.RECEIVE)
-        .messages(List.of(SpringWolfUtils.makeMessageReferenceFromEventClass(CommandClassExtractor.extractCommandClass(ch.method()))))
+        .messages(List.of(SpringWolfUtils.makeMessageReferenceFromEventClass(CommandClassExtractor.extractCommandClass(ch.getMethod()))))
         .reply(OperationReply.builder()
-            .messages(MessageClassScanner.findConcreteImplementorsOf(ch.method().getReturnType()).stream()
+            .messages(MessageClassScanner.findConcreteImplementorsOf(ch.getMethod().getReturnType()).stream()
                 .map(this::makeMessageReference)
                 .toList())
             .address(OperationReplyAddress.builder()
@@ -62,7 +64,7 @@ public class OperationsFromCommandHandlerScanner implements EventuateTramOperati
   }
 
   private static String getOperationId(CommandHandlerInfo ch) {
-    return ch.method().getDeclaringClass().getName() + "." + ch.method().getName();
+    return ch.getMethod().getDeclaringClass().getName() + "." + ch.getMethod().getName();
   }
 
   private MessageReference makeMessageReference(Class<?> aClass) {
