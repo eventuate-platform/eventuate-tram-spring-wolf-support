@@ -3,6 +3,7 @@ package io.eventuate.tram.spring.springwolf;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.eventuate.tram.spring.inmemory.TramInMemoryConfiguration;
 import io.eventuate.tram.spring.springwolf.application.events.EventConfiguration;
+import io.eventuate.tram.spring.springwolf.application.events.OrderCreatedEvent;
 import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.CustomerCommandHandler;
 import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.CustomersAndOrdersConfiguration;
 import io.eventuate.tram.spring.springwolf.asyncapi.AsyncApiDocument;
@@ -46,6 +47,10 @@ public class EventuateTramSpringWolfTest {
   private static final String CUSTOMER_EVENT_PUBLISHER = "io.eventuate.tram.spring.springwolf.application.events.CustomerEventPublisherImpl";
   private static final String CUSTOMER_EVENT_SUBSCRIBER = "operationId";
 
+  private static final String ORDER_CHANNEL = "orderServiceEvents";
+  private static final String ORDER_CREATED_EVENT = OrderCreatedEvent.class.getName();
+  private static final String ORDER_EVENT_SUBSCRIBER = "io.eventuate.tram.spring.springwolf.application.events.OrderEventConsumer.handleOrderCreatedEvent";
+
   @Test
   public void shouldExposeSpringWolf() throws IOException {
     AsyncApiDocument doc = getSpringWolfDocs();
@@ -61,6 +66,10 @@ public class EventuateTramSpringWolfTest {
 
     assertCustomerServiceChannelExists(doc);
     assertCustomerServiceChannelOperationsAreConfigured(doc);
+
+    assertOrderEventsChannelAcceptsOrderCreatedEvent(doc);
+    assertOrderEventsChannelOperationsAreConfigured(doc);
+
   }
 
   private void assertCustomerServiceChannelOperationsAreConfigured(AsyncApiDocument doc) {
@@ -133,6 +142,19 @@ public class EventuateTramSpringWolfTest {
         .containsKey(CUSTOMER_CREATED_EVENT);
   }
 
+  private void assertOrderEventsChannelAcceptsOrderCreatedEvent(AsyncApiDocument doc) {
+    assertThat(doc.getChannels())
+        .as("Channels map should exist")
+        .isNotNull()
+        .containsKey(ORDER_CHANNEL);
+
+    Channel customerChannel = doc.getChannels().get(ORDER_CHANNEL);
+    assertThat(customerChannel.getMessages())
+        .as("Channel messages should exist")
+        .isNotNull()
+        .containsKey(ORDER_CREATED_EVENT);
+  }
+
   private void assertCustomerChannelOperationsAreConfigured(AsyncApiDocument doc) {
     assertThat(doc.getOperations())
         .as("Operations section should exist in AsyncAPI spec")
@@ -141,6 +163,15 @@ public class EventuateTramSpringWolfTest {
 
     assertCustomerChannelPublishOperation(doc.getOperations());
     assertCustomerChannelSubscribeOperation(doc.getOperations());
+  }
+
+  private void assertOrderEventsChannelOperationsAreConfigured(AsyncApiDocument doc) {
+    assertThat(doc.getOperations())
+        .as("Operations section should exist in AsyncAPI spec")
+        .isNotNull()
+        .isNotEmpty();
+
+    assertOrderEventsChannelSubscribeOperation(doc.getOperations());
   }
 
   private void assertCustomerChannelPublishOperation(Map<String, Operation> operations) {
@@ -181,6 +212,26 @@ public class EventuateTramSpringWolfTest {
     assertThat(subscriberOperation.getChannel().getRef())
         .as("Subscriber should reference Customer channel")
         .contains(CUSTOMER_CHANNEL);
+  }
+
+  private void assertOrderEventsChannelSubscribeOperation(Map<String, Operation> operations) {
+    assertThat(operations)
+        .as("Operations map should exist")
+        .isNotNull()
+        .containsKey(ORDER_EVENT_SUBSCRIBER);
+
+    Operation subscriberOperation = operations.get(ORDER_EVENT_SUBSCRIBER);
+    assertThat(subscriberOperation.getAction())
+        .as("Subscriber should have 'receive' action")
+        .isEqualTo("receive");
+
+    assertThat(subscriberOperation.getChannel())
+        .as("Subscriber channel reference should exist")
+        .isNotNull();
+
+    assertThat(subscriberOperation.getChannel().getRef())
+        .as("Subscriber should reference Order channel")
+        .contains(ORDER_CHANNEL);
   }
 
 }

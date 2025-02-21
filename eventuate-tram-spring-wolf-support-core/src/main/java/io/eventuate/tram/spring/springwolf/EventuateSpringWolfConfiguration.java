@@ -59,4 +59,14 @@ public class EventuateSpringWolfConfiguration {
   OperationsFromCommandHandlerScanner operationsFromCommandHandlerScanner() {
     return new OperationsFromCommandHandlerScanner();
   }
+
+  @Bean
+  ChannelsFromAnnotationBasedEventHandlerScanner channelsFromAnnotationBasedEventHandlerScanner() {
+    return new ChannelsFromAnnotationBasedEventHandlerScanner();
+  }
+
+  @Bean
+  OperationsFromAnnotationBasedEventHandlerScanner operationsFromAnnotationBasedEventHandlerScanner() {
+    return new OperationsFromAnnotationBasedEventHandlerScanner();
+  }
 }

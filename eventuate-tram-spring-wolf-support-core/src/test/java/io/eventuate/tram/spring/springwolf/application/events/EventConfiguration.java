@@ -17,6 +17,10 @@ public class EventConfiguration {
     @Bean
     public CustomerEventConsumer orderEventConsumer() {
         return new CustomerEventConsumer();
+    }    @Bean
+
+    public OrderEventConsumer customerEventConsumer() {
+        return new OrderEventConsumer();
     }
 
     @Bean
