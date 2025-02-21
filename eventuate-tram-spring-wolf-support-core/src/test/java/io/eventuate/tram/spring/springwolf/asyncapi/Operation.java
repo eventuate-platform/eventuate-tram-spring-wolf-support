@@ -8,6 +8,7 @@ public class Operation {
     private String action;
     private ChannelReference channel;
     private List<MessageReference> messages;
+    private ReplyInfo reply;
 
     public String getAction() {
         return action;
@@ -19,5 +20,13 @@ public class Operation {
 
     public List<MessageReference> getMessages() {
         return messages;
+    }
+
+    public ReplyInfo getReply() {
+        return reply;
+    }
+
+    public void setReply(ReplyInfo reply) {
+        this.reply = reply;
     }
 }
