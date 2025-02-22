@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import static io.eventuate.tram.spring.springwolf.MessageClassScanner.findConcreteImplementorsOf;
 
+@org.springframework.stereotype.Component
 public class OperationsFromEventPublisherScanner implements EventuateTramOperationsScanner {
 
   @Autowired

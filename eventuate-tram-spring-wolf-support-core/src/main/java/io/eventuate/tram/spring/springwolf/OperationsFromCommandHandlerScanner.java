@@ -19,7 +19,8 @@ import java.util.stream.Collectors;
 
 import static io.eventuate.tram.spring.springwolf.ChannelsFromCommandHandlerScanner.searchAppContextForCommandHandlers;
 
-public class OperationsFromCommandHandlerScanner implements EventuateTramOperationsScanner{
+@org.springframework.stereotype.Component
+public class OperationsFromCommandHandlerScanner implements EventuateTramOperationsScanner {
 
   @Autowired
   private ApplicationContext ctx;

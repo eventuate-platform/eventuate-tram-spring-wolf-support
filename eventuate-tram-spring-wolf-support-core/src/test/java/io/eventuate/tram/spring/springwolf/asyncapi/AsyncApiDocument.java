@@ -44,13 +44,14 @@ public class AsyncApiDocument {
       assertThat(getChannels())
           .as("Channels map should exist")
           .isNotNull()
-          .containsKey(channel);
-
-      Channel customerChannel = getChannels().get(channel);
-      assertThat(customerChannel.getMessages())
-          .as("Channel messages should exist")
-          .isNotNull()
-          .containsKey(eventType);
+          .containsKey(channel)
+          .satisfies(channels -> {
+              Channel customerChannel = channels.get(channel);
+              assertThat(customerChannel.getMessages())
+                  .as("Channel messages should exist")
+                  .isNotNull()
+                  .containsKey(eventType);
+          });
 
       Map<String, Operation> operations = getOperations();
       assertThat(operations)
@@ -59,17 +60,20 @@ public class AsyncApiDocument {
           .containsKey(subscriberId);
 
       Operation subscriberOperation = operations.get(subscriberId);
-      assertThat(subscriberOperation.getAction())
-          .as("Subscriber should have 'receive' action")
-          .isEqualTo("receive");
-
-      assertThat(subscriberOperation.getChannel())
-          .as("Subscriber channel reference should exist")
-          .isNotNull();
-
-      assertThat(subscriberOperation.getChannel().getRef())
-          .as("Subscriber should reference Order channel")
-          .contains(channel);
+      assertThat(subscriberOperation)
+          .isNotNull()
+          .satisfies(op -> {
+              assertThat(op.getAction())
+                  .as("Subscriber should have 'receive' action")
+                  .isEqualTo("receive");
+              assertThat(op.getChannel())
+                  .as("Subscriber channel reference should exist")
+                  .isNotNull()
+                  .extracting(ChannelReference::getRef)
+                  .as("Subscriber should reference Order channel")
+                  .asString()
+                  .contains(channel);
+          });
     }
 
     public void assertSendsMessage(String publisherId, String channel, String eventType) {
@@ -77,13 +81,14 @@ public class AsyncApiDocument {
       assertThat(getChannels())
           .as("Channels map should exist")
           .isNotNull()
-          .containsKey(channel);
-
-      Channel customerChannel = getChannels().get(channel);
-      assertThat(customerChannel.getMessages())
-          .as("Channel messages should exist")
-          .isNotNull()
-          .containsKey(eventType);
+          .containsKey(channel)
+          .satisfies(channels -> {
+              Channel customerChannel = channels.get(channel);
+              assertThat(customerChannel.getMessages())
+                  .as("Channel messages should exist")
+                  .isNotNull()
+                  .containsKey(eventType);
+          });
 
       Map<String, Operation> operations = getOperations();
       assertThat(operations)
@@ -92,16 +97,19 @@ public class AsyncApiDocument {
           .containsKey(publisherId);
 
       Operation subscriberOperation = operations.get(publisherId);
-      assertThat(subscriberOperation.getAction())
-          .as("Subscriber should have 'send' action")
-          .isEqualTo("send");
-
-      assertThat(subscriberOperation.getChannel())
-          .as("Subscriber channel reference should exist")
-          .isNotNull();
-
-      assertThat(subscriberOperation.getChannel().getRef())
-          .as("Subscriber should reference Order channel")
-          .contains(channel);
+      assertThat(subscriberOperation)
+          .isNotNull()
+          .satisfies(op -> {
+              assertThat(op.getAction())
+                  .as("Subscriber should have 'send' action")
+                  .isEqualTo("send");
+              assertThat(op.getChannel())
+                  .as("Subscriber channel reference should exist")
+                  .isNotNull()
+                  .extracting(ChannelReference::getRef)
+                  .as("Subscriber should reference Order channel")
+                  .asString()
+                  .contains(channel);
+          });
     }
 }

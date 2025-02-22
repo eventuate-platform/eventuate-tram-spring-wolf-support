@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 import static io.eventuate.tram.spring.springwolf.ChannelsFromAnnotationBasedEventHandlerScanner.searchAppContextForDomainEventHandlers;
 
+@org.springframework.stereotype.Component
 public class OperationsFromAnnotationBasedEventHandlerScanner implements EventuateTramOperationsScanner{
 
   @Autowired

@@ -1,39 +1,32 @@
 package io.eventuate.tram.spring.springwolf;
 
-import io.eventuate.tram.spring.commands.consumer.CommandHandlerInfo;
-import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.CustomerCommandHandler;
-import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.CustomerService;
+import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.CustomersAndOrdersConfiguration;
+import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.commands.ReserveCreditCommand;
+import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
+import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-import java.util.List;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class ChannelsFromCommandHandlerScannerTest {
 
     @Configuration
+    @Import({CustomersAndOrdersConfiguration.class, })
     static class TestConfig {
-        @Bean
-        public CustomerCommandHandler customerCommandHandler(CustomerService customerService) {
-            return new CustomerCommandHandler(customerService);
-        }
-
         @Bean
         public ChannelsFromCommandHandlerScanner channelsFromCommandHandlerScanner() {
             return new ChannelsFromCommandHandlerScanner();
-        }
-
-        @Bean
-        CustomerService customerService() {
-            return new CustomerService();
         }
 
     }
@@ -41,22 +34,25 @@ public class ChannelsFromCommandHandlerScannerTest {
     @Autowired
     private ChannelsFromCommandHandlerScanner scanner;
 
-    @MockitoBean
-    private SpringWolfMessageFactory springWolfMessageFactory;
-
     @Autowired
     private ApplicationContext ctx;
+
+    @MockitoBean
+    private SpringWolfMessageFactory springWolfMessageFactory;
 
     @Test
     public void shouldFindCommandHandlers() {
 
-        List<CommandHandlerInfo> handlers = scanner.searchAppContextForCommandHandlers(ctx);
+        when(springWolfMessageFactory.makeMessageFromClass(ReserveCreditCommand.class))
+            .thenReturn(MessageObject.builder().messageId(ReserveCreditCommand.class.getName()).build());
 
-        assertNotNull(handlers);
-        assertEquals(1, handlers.size());
+        Map<String, ChannelObject> handlers = scanner.scan();
 
-        CommandHandlerInfo handler = handlers.get(0);
-        assertEquals("customerCommandDispatcher", handler.getEventuateCommandHandler().subscriberId());
-        assertEquals("customerService", handler.getEventuateCommandHandler().channel());
+        assertThat(handlers)
+                .isNotNull()
+                .hasSize(1);
+
+        ChannelObject channel = handlers.get("customerService");
+        assertThat(channel).isNotNull();
     }
 }
