@@ -1,7 +1,5 @@
 package io.eventuate.tram.spring.springwolf;
 
-import io.eventuate.tram.commands.common.Command;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -30,13 +28,11 @@ public class TypeParameterExtractor {
       throw new IllegalArgumentException("Type argument must be a class");
     }
 
-    Class<?> commandType = (Class<?>) typeArg;
-    if (!expectedClass.isAssignableFrom(commandType)) {
-      throw new IllegalArgumentException("Command type must implement Command interface");
+    Class<?> paramType = (Class<?>) typeArg;
+    if (!expectedClass.isAssignableFrom(paramType)) {
+      throw new IllegalArgumentException(String.format("Parameter type must be assignable to %s", expectedClass.getSimpleName()));
     }
 
-    @SuppressWarnings("unchecked")
-    Class<? extends Command> result = (Class<? extends Command>) commandType;
-    return (Class<?>) result;
+    return paramType;
   }
 }

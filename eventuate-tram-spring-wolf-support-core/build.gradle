@@ -1,19 +1,22 @@
 
+plugins {
+    id 'java-test-fixtures'
+}
+
 dependencies {
-    implementation 'io.github.springwolf:springwolf-core:1.10.0'
+    api 'io.github.springwolf:springwolf-core:1.10.0'
     runtimeOnly 'io.github.springwolf:springwolf-ui:1.10.0'
-    implementation "io.eventuate.tram.core:eventuate-tram-spring-events-starter:0.36.0.BUILD-SNAPSHOT"
-    implementation "io.eventuate.tram.core:eventuate-tram-commands:0.36.0.BUILD-SNAPSHOT"
-    implementation "io.eventuate.tram.core:eventuate-tram-spring-commands:0.36.0.BUILD-SNAPSHOT"
+    api platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+    api "org.springframework:spring-context"
+
+    testFixturesImplementation platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+    testFixturesImplementation "com.fasterxml.jackson.core:jackson-annotations"
+    testFixturesImplementation "org.assertj:assertj-core"
+    testFixturesImplementation "io.rest-assured:rest-assured"
+    testFixturesImplementation "com.fasterxml.jackson.core:jackson-databind"
 
     testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
     testImplementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
     testImplementation "io.rest-assured:rest-assured"
-    testImplementation "io.eventuate.tram.core:eventuate-tram-spring-in-memory:0.36.0.BUILD-SNAPSHOT"
-    testImplementation "io.eventuate.tram.sagas:eventuate-tram-sagas-spring-participant-starter"
-    testImplementation "io.eventuate.examples.common:eventuate-examples-common-money-jakarta9:$eventuateCommonExamplesVersion"
-    testImplementation "io.eventuate.tram.core:eventuate-tram-spring-commands-starter"
-    testImplementation "io.eventuate.tram.core:eventuate-tram-test-util"
     testImplementation "io.eventuate.util:eventuate-util-test"
-
 }

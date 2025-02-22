@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 @Configuration
-@ComponentScan(basePackages = "io.eventuate.tram.spring.springwolf")
 public class EventuateSpringWolfConfiguration {
 
   @Bean

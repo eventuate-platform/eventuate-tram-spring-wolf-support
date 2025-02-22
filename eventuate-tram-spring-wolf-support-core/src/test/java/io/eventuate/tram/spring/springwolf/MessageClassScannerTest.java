@@ -1,7 +1,5 @@
 package io.eventuate.tram.spring.springwolf;
 
-import io.eventuate.tram.spring.springwolf.application.events.CustomerCreatedEvent;
-import io.eventuate.tram.spring.springwolf.application.events.CustomerEvent;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
@@ -9,6 +7,12 @@ import java.util.Set;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class MessageClassScannerTest {
+
+  interface CustomerEvent {
+  }
+
+  static class CustomerCreatedEvent implements CustomerEvent {
+  }
 
   @Test
   public void shouldFindConcreteEventImplementations() {
