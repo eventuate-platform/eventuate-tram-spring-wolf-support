@@ -50,6 +50,11 @@ public class AsyncApiDocument {
     return operations;
   }
 
+  public void assertEmpty() {
+    assertThat(channels).isEmpty();
+    assertThat(operations).isEmpty();
+  }
+
   public void assertReceivesMessageAndReplies(String subscriberId, String channel, String eventType, Set<String> replyTypes) {
     assertReceivesMessage(subscriberId, channel, eventType);
     Map<String, Operation> operations = getOperations();
@@ -134,4 +139,5 @@ public class AsyncApiDocument {
               .contains(channel);
         });
   }
+
 }
