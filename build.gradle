@@ -71,10 +71,10 @@ gradle.projectsEvaluated {
 
 }
 
-subprojects {
-    configurations.all {
-        resolutionStrategy.cacheChangingModulesFor 10, 'minutes'
-    }
-}
+//subprojects {
+//    configurations.all {
+//        resolutionStrategy.cacheChangingModulesFor 10, 'minutes'
+//    }
+//}
 
 

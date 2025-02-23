@@ -17,8 +17,8 @@ public class OperationsFromEventPublisherScanner implements EventuateTramOperati
   @Autowired
   private ApplicationContext ctx;
 
-  public io.eventuate.tram.spring.springwolf.OperationsWithClasses scan() {
-    return new OperationsWithClasses(ctx.getBeansOfType(DomainEventPublisherForAggregate.class).values().stream()
+  public ElementsWithClasses scan() {
+    return new ElementsWithClasses(ctx.getBeansOfType(DomainEventPublisherForAggregate.class).values().stream()
         .collect(Collectors.toMap(
             ep -> ep.getClass().getName(),
             this::makeOperationFromEventPublisher
@@ -34,7 +34,7 @@ public class OperationsFromEventPublisherScanner implements EventuateTramOperati
         .description("my event sender")
         .action(OperationAction.SEND)
         .messages(findConcreteImplementorsOf(ep.getEventBaseClass()).stream()
-            .map(SpringWolfUtils::makeMessageReferenceFromEventClass)
+            .map(SpringWolfUtils::makeMessageReference)
             .toList())
         .build();
   }

@@ -19,7 +19,7 @@ public class OperationsFromEventHandlersScanner implements EventuateTramOperatio
   private ApplicationContext ctx;
 
 
-  public OperationsWithClasses scan() {
+  public ElementsWithClasses scan() {
     List<DomainEventHandlers> domainEventHandlers = DomainEventHandlersRetriever.getDomainEventHandlers(ctx);
 
     Map<String, List<DomainEventHandler>> aggregateTypeToEvents = domainEventHandlers.stream()
@@ -27,7 +27,7 @@ public class OperationsFromEventHandlersScanner implements EventuateTramOperatio
         .collect(Collectors.groupingBy(DomainEventHandler::getAggregateType));
 
 
-    return new OperationsWithClasses(aggregateTypeToEvents.entrySet().stream()
+    return new ElementsWithClasses(aggregateTypeToEvents.entrySet().stream()
         .collect(Collectors.toMap(
             Map.Entry::getKey, // key mapper
             entry -> makeOperationForDomainEventHandlers(entry.getKey(), entry.getValue()) // value mapper
@@ -43,7 +43,7 @@ public class OperationsFromEventHandlersScanner implements EventuateTramOperatio
         .description("my event handler")
         .action(OperationAction.RECEIVE)
         .messages(eventHandlers.stream()
-            .map(deh -> SpringWolfUtils.makeMessageReferenceFromEventClass(deh.getEventClass()))
+            .map(deh -> SpringWolfUtils.makeMessageReference(deh.getEventClass()))
             .toList())
         .build();
   }

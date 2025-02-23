@@ -2,7 +2,6 @@ package io.eventuate.tram.spring.springwolf;
 
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.core.asyncapi.scanners.OperationsScanner;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,18 +11,17 @@ import java.util.stream.Collectors;
 public class EventuateTramOperationsScannerManager implements OperationsScanner {
 
   private final List<EventuateTramOperationsScanner> scanners;
+  private final SpringWolfMessageFactory springWolfMessageFactory;
 
-  public EventuateTramOperationsScannerManager(List<EventuateTramOperationsScanner> scanners) {
+  public EventuateTramOperationsScannerManager(List<EventuateTramOperationsScanner> scanners, SpringWolfMessageFactory springWolfMessageFactory) {
     this.scanners = scanners;
+    this.springWolfMessageFactory = springWolfMessageFactory;
   }
-
-  @Autowired
-  private SpringWolfMessageFactory springWolfMessageFactory;
 
 
   @Override
   public Map<String, Operation> scan() {
-    List<OperationsWithClasses> results = scanners.stream()
+    List<ElementsWithClasses<Operation>> results = scanners.stream()
         .map(EventuateTramOperationsScanner::scan).toList();
 
     results.stream()
@@ -32,7 +30,7 @@ public class EventuateTramOperationsScannerManager implements OperationsScanner 
         .forEach(springWolfMessageFactory::makeMessageFromClass);
 
     return results.stream()
-            .map(OperationsWithClasses::operations)
+            .map(ElementsWithClasses::elements)
             .reduce(new HashMap<>(), (result, map) -> {
               result.putAll(map);
               return result;

@@ -84,6 +84,8 @@ public class AsyncApiDocument {
 
   public void assertReceivesMessage(String subscriberId, String channel, String eventType) {
 
+    assertMessagesDefined(Set.of(eventType));
+
     assertThat(getChannels())
         .as("Channels map should exist")
         .isNotNull()
@@ -120,6 +122,8 @@ public class AsyncApiDocument {
   }
 
   public void assertSendsMessage(String publisherId, String channel, String eventType) {
+
+    assertMessagesDefined(Set.of(eventType));
 
     assertThat(getChannels())
         .as("Channels map should exist")

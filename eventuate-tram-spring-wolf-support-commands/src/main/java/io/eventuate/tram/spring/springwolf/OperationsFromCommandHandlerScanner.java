@@ -6,7 +6,6 @@ import io.eventuate.tram.spring.commands.consumer.CommandClassExtractor;
 import io.eventuate.tram.spring.commands.consumer.CommandHandlerInfo;
 import io.eventuate.tram.spring.commands.consumer.EventuateCommandDispatcher;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
-import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationReply;
@@ -32,22 +31,22 @@ public class OperationsFromCommandHandlerScanner implements EventuateTramOperati
   }
 
   @Override
-  public OperationsWithClasses scan() {
+  public ElementsWithClasses<Operation> scan() {
     List<CommandHandlerInfo> commandHandlers = eventuateCommandDispatcher.getCommandHandlers();
     return makeOperationsFromCommandHandlers(commandHandlers);
   }
 
-  private OperationsWithClasses makeOperationsFromCommandHandlers(List<CommandHandlerInfo> commandHandlers) {
-    Map<String, OperationWithClasses> operationsWithClasses = commandHandlers
+  private ElementsWithClasses<Operation> makeOperationsFromCommandHandlers(List<CommandHandlerInfo> commandHandlers) {
+    Map<String, ElementWithClasses<Operation>> operationsWithClasses = commandHandlers
         .stream()
         .collect(Collectors.toMap(
             OperationsFromCommandHandlerScanner::getOperationId,
             ch -> makeOperationsFromCommandHandlers(ch.getEventuateCommandHandler().channel(), ch)
         ));
-    return OperationsWithClasses.make(operationsWithClasses);
+    return ElementsWithClasses.make(operationsWithClasses);
   }
 
-  private OperationWithClasses makeOperationsFromCommandHandlers(String channel, CommandHandlerInfo ch) {
+  private ElementWithClasses<Operation> makeOperationsFromCommandHandlers(String channel, CommandHandlerInfo ch) {
     Set<Class<?>> replyClasses = MessageClassScanner.findConcreteImplementorsOf(ch.getMethod().getReturnType());
     Class<? extends Command> commandClass = CommandClassExtractor.extractCommandClass(ch.getMethod());
 
@@ -58,10 +57,10 @@ public class OperationsFromCommandHandlerScanner implements EventuateTramOperati
         .operationId(getOperationId(ch))
         .description("my event handler")
         .action(OperationAction.RECEIVE)
-        .messages(List.of(makeMessageReference(commandClass)))
+        .messages(List.of(SpringWolfUtils.makeMessageReference(commandClass)))
         .reply(OperationReply.builder()
             .messages(replyClasses.stream()
-                .map(this::makeMessageReference)
+                .map(SpringWolfUtils::makeMessageReference)
                 .toList())
             .address(OperationReplyAddress.builder()
                 .location("$message.header#/" + CommandMessageHeaders.REPLY_TO)
@@ -69,16 +68,11 @@ public class OperationsFromCommandHandlerScanner implements EventuateTramOperati
             .build())
         .build();
 
-    return new OperationWithClasses(operation, add(replyClasses, commandClass));
+    return new ElementWithClasses<>(operation, add(replyClasses, commandClass));
   }
 
   private static String getOperationId(CommandHandlerInfo ch) {
     return ch.getMethod().getDeclaringClass().getName() + "." + ch.getMethod().getName();
-  }
-
-  private MessageReference makeMessageReference(Class<?> aClass) {
-    // MessageObject message = springWolfMessageFactory.makeMessageFromClass(aClass);
-    return MessageReference.toComponentMessage(aClass.getName());
   }
 
 
