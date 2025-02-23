@@ -52,6 +52,34 @@ public class EventuateTramSpringWolfCommandsTest {
         ReserveCreditCommand.class.getName(),
         Set.of(CustomerNotFound.class.getName(), CustomerCreditLimitExceeded.class.getName(), CustomerCreditReserved.class.getName())
     );
+
+    // Verify components section
+    assertThat(doc.getComponents())
+        .as("Components section should exist")
+        .isNotNull();
+
+    // Verify schemas
+    assertThat(doc.getComponents().getSchemas())
+        .as("Schemas section should exist")
+        .isNotNull()
+        .containsKey(ReserveCreditCommand.class.getName());
+
+    // Verify messages
+    assertThat(doc.getComponents().getMessages())
+        .as("Messages section should exist")
+        .isNotNull()
+        .containsKey(ReserveCreditCommand.class.getName())
+        .satisfies(messages -> {
+            var message = messages.get(ReserveCreditCommand.class.getName());
+            assertThat(message.getPayload().getSchemaFormat())
+                .as("Schema format should be AsyncAPI 3.0.0")
+                .isEqualTo("application/vnd.aai.asyncapi+json;version=3.0.0");
+            assertThat(message.getPayload().getSchema())
+                .as("Message schema should reference the schema definition")
+                .extracting("ref")
+                .asString()
+                .isEqualTo("#/components/schemas/" + ReserveCreditCommand.class.getName());
+        });
   }
 
 }

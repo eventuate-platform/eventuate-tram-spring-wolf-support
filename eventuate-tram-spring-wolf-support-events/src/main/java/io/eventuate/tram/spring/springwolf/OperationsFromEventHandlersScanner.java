@@ -19,7 +19,7 @@ public class OperationsFromEventHandlersScanner implements EventuateTramOperatio
   private ApplicationContext ctx;
 
 
-  public Map<String, Operation> scan() {
+  public OperationsWithClasses scan() {
     List<DomainEventHandlers> domainEventHandlers = DomainEventHandlersRetriever.getDomainEventHandlers(ctx);
 
     Map<String, List<DomainEventHandler>> aggregateTypeToEvents = domainEventHandlers.stream()
@@ -27,11 +27,11 @@ public class OperationsFromEventHandlersScanner implements EventuateTramOperatio
         .collect(Collectors.groupingBy(DomainEventHandler::getAggregateType));
 
 
-    return aggregateTypeToEvents.entrySet().stream()
+    return new OperationsWithClasses(aggregateTypeToEvents.entrySet().stream()
         .collect(Collectors.toMap(
             Map.Entry::getKey, // key mapper
             entry -> makeOperationForDomainEventHandlers(entry.getKey(), entry.getValue()) // value mapper
-        ));
+        )));
   }
 
   public static Operation makeOperationForDomainEventHandlers(String aggregateType, List<DomainEventHandler> eventHandlers) {

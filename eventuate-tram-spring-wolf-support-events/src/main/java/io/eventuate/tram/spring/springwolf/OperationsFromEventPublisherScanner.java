@@ -7,7 +7,6 @@ import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static io.eventuate.tram.spring.springwolf.MessageClassScanner.findConcreteImplementorsOf;
@@ -18,12 +17,12 @@ public class OperationsFromEventPublisherScanner implements EventuateTramOperati
   @Autowired
   private ApplicationContext ctx;
 
-  public Map<String, Operation> scan() {
-    return ctx.getBeansOfType(DomainEventPublisherForAggregate.class).values().stream()
+  public io.eventuate.tram.spring.springwolf.OperationsWithClasses scan() {
+    return new OperationsWithClasses(ctx.getBeansOfType(DomainEventPublisherForAggregate.class).values().stream()
         .collect(Collectors.toMap(
             ep -> ep.getClass().getName(),
             this::makeOperationFromEventPublisher
-        ));
+        )));
   }
 
   private Operation makeOperationFromEventPublisher(DomainEventPublisherForAggregate ep) {

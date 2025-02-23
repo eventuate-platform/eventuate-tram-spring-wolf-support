@@ -25,10 +25,10 @@ public class OperationsFromAnnotationBasedEventHandlerScanner implements Eventua
   @Autowired
   private SpringWolfMessageFactory springWolfMessageFactory;
 
-  public Map<String, Operation> scan() {
+  public OperationsWithClasses scan() {
 
     List<EventuateDomainEventHandlerInfo> commandHandlers = searchAppContextForDomainEventHandlers(ctx);
-    return makeOperationsFromCommandHandlers(commandHandlers);
+    return new OperationsWithClasses(makeOperationsFromCommandHandlers(commandHandlers));
 
   }
 

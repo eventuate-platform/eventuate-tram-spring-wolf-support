@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Set;
 
+import static io.eventuate.tram.spring.springwolf.SetUtil.add;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -19,6 +20,7 @@ public class AsyncApiDocument {
   private String version;
   private Map<String, Channel> channels;
   private Map<String, Operation> operations;
+  private Components components;
 
   public static AsyncApiDocument getSpringWolfDoc() {
     var s = RestAssured.get("/springwolf/docs")
@@ -50,12 +52,21 @@ public class AsyncApiDocument {
     return operations;
   }
 
+  public Components getComponents() {
+    return components;
+  }
+
+  public void setComponents(Components components) {
+    this.components = components;
+  }
+
   public void assertEmpty() {
     assertThat(channels).isEmpty();
     assertThat(operations).isEmpty();
   }
 
   public void assertReceivesMessageAndReplies(String subscriberId, String channel, String eventType, Set<String> replyTypes) {
+    assertMessagesDefined(add(replyTypes, eventType));;
     assertReceivesMessage(subscriberId, channel, eventType);
     Map<String, Operation> operations = getOperations();
     Operation operation = operations.get(subscriberId);
@@ -65,6 +76,11 @@ public class AsyncApiDocument {
         .as("Reply messages should exist")
         .containsAll(replyTypes);
   }
+
+  private void assertMessagesDefined(Set<String> messageTypes) {
+    assertThat(components.getMessages()).containsKeys(messageTypes.toArray(new String[0]));
+  }
+
 
   public void assertReceivesMessage(String subscriberId, String channel, String eventType) {
 
