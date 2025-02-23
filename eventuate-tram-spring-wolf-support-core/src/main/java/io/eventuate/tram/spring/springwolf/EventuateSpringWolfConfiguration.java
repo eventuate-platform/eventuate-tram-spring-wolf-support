@@ -11,8 +11,8 @@ import java.util.List;
 public class EventuateSpringWolfConfiguration {
 
   @Bean
-  public ChannelsScanner eventuateTramChannelsScanner(List<EventuateTramChannelsScanner> scanners) {
-    return new EventuateTramChannelsScannerManager(scanners);
+  public ChannelsScanner eventuateTramChannelsScanner(List<EventuateTramChannelsScanner> scanners, SpringWolfMessageFactory springWolfMessageFactory) {
+    return new EventuateTramChannelsScannerManager(scanners, springWolfMessageFactory);
   }
 
   @Bean

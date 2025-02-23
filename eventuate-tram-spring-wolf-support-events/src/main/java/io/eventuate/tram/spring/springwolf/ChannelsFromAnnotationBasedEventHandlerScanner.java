@@ -28,10 +28,10 @@ public class ChannelsFromAnnotationBasedEventHandlerScanner implements Eventuate
   private SpringWolfMessageFactory springWolfMessageFactory;
 
   @Override
-  public Map<String, ChannelObject> scan() {
+  public ElementsWithClasses<ChannelObject> scan() {
     List<EventuateDomainEventHandlerInfo> commandHandlers = searchAppContextForDomainEventHandlers(ctx);
     Map<String, ChannelObject> channels = makeChannelsFromCommandHandlers(commandHandlers);
-    return channels;
+    return new ElementsWithClasses<>(channels);
   }
 
   private Map<String, ChannelObject> makeChannelsFromCommandHandlers(List<EventuateDomainEventHandlerInfo> commandHandlers) {

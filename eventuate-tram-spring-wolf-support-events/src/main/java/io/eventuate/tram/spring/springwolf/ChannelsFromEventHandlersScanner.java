@@ -21,18 +21,18 @@ public class ChannelsFromEventHandlersScanner implements EventuateTramChannelsSc
   @Autowired
   private SpringWolfMessageFactory springWolfMessageFactory;
 
-  public Map<String, ChannelObject> scan() {
+  public ElementsWithClasses<ChannelObject> scan() {
     List<DomainEventHandlers> domainEventHandlers = DomainEventHandlersRetriever.getDomainEventHandlers(ctx);
 
     Map<String, List<DomainEventHandler>> aggregateTypeToEvents = domainEventHandlers.stream()
         .flatMap(dehs -> dehs.getHandlers().stream())
         .collect(Collectors.groupingBy(DomainEventHandler::getAggregateType));
 
-    return aggregateTypeToEvents.entrySet().stream()
+    return new ElementsWithClasses<>(aggregateTypeToEvents.entrySet().stream()
         .collect(Collectors.toMap(
             Map.Entry::getKey,
             entry -> makeChannelObject(entry.getKey(), entry.getValue())
-        ));
+        )));
   }
 
   private ChannelObject makeChannelObject(String aggregateType, List<DomainEventHandler> eventHandlers) {

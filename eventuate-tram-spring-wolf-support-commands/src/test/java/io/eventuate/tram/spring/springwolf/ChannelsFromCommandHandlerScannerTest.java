@@ -5,6 +5,7 @@ import io.eventuate.tram.spring.commands.consumer.CommandHandlerInfo;
 import io.eventuate.tram.spring.commands.consumer.EventuateCommandDispatcher;
 import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.CustomerCommandHandler;
 import io.eventuate.tram.spring.springwolf.application.requestasyncresponse.commands.ReserveCreditCommand;
+import io.github.springwolf.asyncapi.v3.model.channel.Channel;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageObject;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,13 +58,13 @@ public class ChannelsFromCommandHandlerScannerTest {
         when(eventuateCommandDispatcher.getCommandHandlers())
             .thenReturn(List.of(new CommandHandlerInfo(customerCommandHandler, eventuateCommandHandler, method)));
 
-        Map<String, ChannelObject> handlers = scanner.scan();
+        Map<String, ChannelObject> handlers = scanner.scan().elements();
 
         assertThat(handlers)
                 .isNotNull()
                 .hasSize(1);
 
-        ChannelObject channel = handlers.get("customerService");
+        Channel channel = handlers.get("customerService");
         assertThat(channel).isNotNull();
     }
 }

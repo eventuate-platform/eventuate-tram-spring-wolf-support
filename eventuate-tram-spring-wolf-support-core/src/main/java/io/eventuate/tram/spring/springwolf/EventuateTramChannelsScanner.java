@@ -1,6 +1,9 @@
 package io.eventuate.tram.spring.springwolf;
 
-import io.github.springwolf.core.asyncapi.scanners.ChannelsScanner;
+import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 
-public interface EventuateTramChannelsScanner extends ChannelsScanner  {
+public interface EventuateTramChannelsScanner  {
+
+  ElementsWithClasses<ChannelObject> scan();
+
 }

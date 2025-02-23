@@ -9,7 +9,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -21,13 +20,13 @@ public class ChannelsFromEventPublishersScanner implements EventuateTramChannels
   @Autowired
   private SpringWolfMessageFactory springWolfMessageFactory;
 
-  public Map<String, ChannelObject> scan() {
+  public ElementsWithClasses<ChannelObject> scan() {
     List<DomainEventPublisherForAggregate> eventPublishers = ctx.getBeansOfType(DomainEventPublisherForAggregate.class).values().stream().toList();
-    return eventPublishers.stream()
+    return new ElementsWithClasses<>(eventPublishers.stream()
         .collect(Collectors.toMap(
             ep -> ep.getAggregateClass().getName(),
             ep -> makeChannelObjectFromEventPublisher(ep.getAggregateClass().getName(), ep.getEventBaseClass())
-        ));
+        )));
   }
 
   public ChannelObject makeChannelObjectFromEventPublisher(String aggregateType, Class eventBaseClass) {

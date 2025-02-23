@@ -30,9 +30,9 @@ public class ChannelsFromCommandHandlerScanner implements EventuateTramChannelsS
   }
 
   @Override
-  public Map<String, ChannelObject> scan() {
+  public ElementsWithClasses<ChannelObject> scan() {
     List<CommandHandlerInfo> commandHandlers = eventuateCommandDispatcher.getCommandHandlers();
-    return makeChannelsFromCommandHandlers(commandHandlers);
+    return new ElementsWithClasses<>(makeChannelsFromCommandHandlers(commandHandlers));
   }
 
   private Map<String, ChannelObject> makeChannelsFromCommandHandlers(List<CommandHandlerInfo> commandHandlers) {
