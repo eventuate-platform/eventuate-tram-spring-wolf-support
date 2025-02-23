@@ -1,33 +1,38 @@
 package io.eventuate.tram.spring.springwolf;
 
+import io.eventuate.tram.events.subscriber.DomainEventDispatcher;
 import io.eventuate.tram.events.subscriber.DomainEventHandler;
 import io.eventuate.tram.events.subscriber.DomainEventHandlers;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@org.springframework.stereotype.Component
+@Component
 public class OperationsFromEventHandlersScanner implements EventuateTramOperationsScanner {
 
-  @Autowired
-  private ApplicationContext ctx;
+  private final List<DomainEventDispatcher> domainEventDispatchers;
 
+  public OperationsFromEventHandlersScanner(List<DomainEventDispatcher> domainEventDispatchers) {
+    this.domainEventDispatchers = domainEventDispatchers;
+  }
 
-  public ElementsWithClasses scan() {
-    List<DomainEventHandlers> domainEventHandlers = DomainEventHandlersRetriever.getDomainEventHandlers(ctx);
+  public ElementsWithClasses<Operation> scan() {
+
+    List<DomainEventHandlers> domainEventHandlers = domainEventDispatchers.stream()
+        .map(DomainEventDispatcher::getDomainEventHandlers)
+        .toList();
 
     Map<String, List<DomainEventHandler>> aggregateTypeToEvents = domainEventHandlers.stream()
         .flatMap(dehs -> dehs.getHandlers().stream())
         .collect(Collectors.groupingBy(DomainEventHandler::getAggregateType));
 
 
-    return new ElementsWithClasses(aggregateTypeToEvents.entrySet().stream()
+    return new ElementsWithClasses<>(aggregateTypeToEvents.entrySet().stream()
         .collect(Collectors.toMap(
             Map.Entry::getKey, // key mapper
             entry -> makeOperationForDomainEventHandlers(entry.getKey(), entry.getValue()) // value mapper

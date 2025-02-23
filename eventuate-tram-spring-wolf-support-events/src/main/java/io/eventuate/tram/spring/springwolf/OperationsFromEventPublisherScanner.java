@@ -4,21 +4,24 @@ import io.eventuate.tram.events.publisher.DomainEventPublisherForAggregate;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static io.eventuate.tram.spring.springwolf.MessageClassScanner.findConcreteImplementorsOf;
 
-@org.springframework.stereotype.Component
+@Component
 public class OperationsFromEventPublisherScanner implements EventuateTramOperationsScanner {
 
-  @Autowired
-  private ApplicationContext ctx;
+  private final List<DomainEventPublisherForAggregate> domainEventPublisherForAggregates;
 
-  public ElementsWithClasses scan() {
-    return new ElementsWithClasses(ctx.getBeansOfType(DomainEventPublisherForAggregate.class).values().stream()
+  public OperationsFromEventPublisherScanner(List<DomainEventPublisherForAggregate> domainEventPublisherForAggregates) {
+    this.domainEventPublisherForAggregates = domainEventPublisherForAggregates;
+  }
+
+  public ElementsWithClasses<Operation> scan() {
+    return new ElementsWithClasses<>(domainEventPublisherForAggregates.stream()
         .collect(Collectors.toMap(
             ep -> ep.getClass().getName(),
             this::makeOperationFromEventPublisher
