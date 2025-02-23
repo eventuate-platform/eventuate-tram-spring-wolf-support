@@ -1,21 +1,21 @@
 package io.eventuate.tram.spring.springwolf;
 
 import io.eventuate.tram.events.common.DomainEvent;
+import io.eventuate.tram.spring.events.subscriber.EventuateDomainEventDispatcher;
 import io.eventuate.tram.spring.events.subscriber.EventuateDomainEventHandlerInfo;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.eventuate.tram.spring.springwolf.ChannelsFromAnnotationBasedEventHandlerScanner.searchAppContextForDomainEventHandlers;
-
-@org.springframework.stereotype.Component
+@Component
 public class OperationsFromAnnotationBasedEventHandlerScanner implements EventuateTramOperationsScanner{
 
   @Autowired
@@ -24,13 +24,20 @@ public class OperationsFromAnnotationBasedEventHandlerScanner implements Eventua
   @Autowired
   private SpringWolfMessageFactory springWolfMessageFactory;
 
-  public ElementsWithClasses<Operation> scan() {
-    List<EventuateDomainEventHandlerInfo> commandHandlers = searchAppContextForDomainEventHandlers(ctx);
-    return ElementsWithClasses.make(makeOperationsFromEventHandlers(commandHandlers));
+  private final EventuateDomainEventDispatcher eventuateDomainEventDispatcher;
+
+  public OperationsFromAnnotationBasedEventHandlerScanner(EventuateDomainEventDispatcher eventuateDomainEventDispatcher) {
+    this.eventuateDomainEventDispatcher = eventuateDomainEventDispatcher;
   }
 
-  private Map<String, ElementWithClasses<Operation>> makeOperationsFromEventHandlers(List<EventuateDomainEventHandlerInfo> commandHandlers) {
-    return commandHandlers
+
+  public ElementsWithClasses<Operation> scan() {
+    List<EventuateDomainEventHandlerInfo> eventHandlers = eventuateDomainEventDispatcher.getEventHandlers();
+    return ElementsWithClasses.make(makeOperationsFromEventHandlers(eventHandlers));
+  }
+
+  private Map<String, ElementWithClasses<Operation>> makeOperationsFromEventHandlers(List<EventuateDomainEventHandlerInfo> eventHandlers) {
+    return eventHandlers
         .stream()
         .collect(Collectors.toMap(
             OperationsFromAnnotationBasedEventHandlerScanner::getOperationId,
@@ -38,13 +45,13 @@ public class OperationsFromAnnotationBasedEventHandlerScanner implements Eventua
         ));
   }
 
-  private ElementWithClasses<Operation> makeOperationFromEventHandler(String channel, EventuateDomainEventHandlerInfo ch) {
-    Class<?> classz = TypeParameterExtractor.extractTypeParameter(ch.getMethod(), DomainEvent.class);
+  private ElementWithClasses<Operation> makeOperationFromEventHandler(String channel, EventuateDomainEventHandlerInfo eventHandlers) {
+    Class<?> classz = TypeParameterExtractor.extractTypeParameter(eventHandlers.getMethod(), DomainEvent.class);
     Operation operation = Operation.builder()
         .channel(ChannelReference.builder()
             .ref("#/channels/" + channel)
             .build())
-        .operationId(getOperationId(ch))
+        .operationId(getOperationId(eventHandlers))
         .description("my event handler")
         .action(OperationAction.RECEIVE)
         .messages(List.of(SpringWolfUtils.makeMessageReference(classz)))
