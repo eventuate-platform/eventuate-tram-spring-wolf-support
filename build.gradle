@@ -70,7 +70,7 @@ gradle.projectsEvaluated {
     generateMetadataFileForMavenPublication.dependsOn(project.aggregateJavaDocsJar)
 
 }
-π
+
 configurations.all {
     resolutionStrategy.cacheDynamicVersionsFor 10, 'minutes'
 }
