@@ -37,23 +37,24 @@ public class ChannelsFromCommandHandlerScanner implements EventuateTramChannelsS
 
   private Map<String, ChannelObject> makeChannelsFromCommandHandlers(List<CommandHandlerInfo> commandHandlers) {
     return commandHandlers.stream()
-        .collect(Collectors.groupingBy((CommandHandlerInfo eventuateCommandHandler) -> eventuateCommandHandler.getEventuateCommandHandler().channel()))
-        .entrySet()
-        .stream()
-        .collect(Collectors.toMap(
-            Map.Entry::getKey,
-            entry -> makeChannelObject(entry.getKey(), entry.getValue())
+        .collect(Collectors.groupingBy(
+            commandHandler -> commandHandler.getEventuateCommandHandler().channel(),
+            Collectors.collectingAndThen(
+                Collectors.toList(),
+                this::makeChannelObject
+            )
         ));
   }
 
-  private ChannelObject makeChannelObject(String key,  List<CommandHandlerInfo> commandHanders) {
+  private ChannelObject makeChannelObject(List<CommandHandlerInfo> commandHanders) {
+    String key = commandHanders.get(0).getEventuateCommandHandler().channel();
     return ChannelObject.builder()
         .channelId(key)
         .messages(commandHanders.stream()
-            .map(ch -> CommandClassExtractor.extractCommandClass(ch.getMethod()))
+            .map(commandHandler -> CommandClassExtractor.extractCommandClass(commandHandler.getMethod()))
             .collect(Collectors.toMap(
-                Class::getName, // key mapper
-                this::makeMessageReference // value mapper
+                Class::getName,
+                this::makeMessageReference
             )))
         .build();
   }

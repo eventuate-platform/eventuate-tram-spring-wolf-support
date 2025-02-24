@@ -40,7 +40,7 @@ public class ChannelsFromAnnotationBasedEventHandlerScanner implements Eventuate
 
   private ElementWithClasses<ChannelObject> makeChannelObject(String key,  List<EventuateDomainEventHandlerInfo> eventHandlers) {
     Set<Class<?>> eventClasses = eventHandlers.stream()
-        .map(ch -> TypeParameterExtractor.extractTypeParameter(ch.getMethod(), DomainEvent.class))
+        .map(ch -> (Class<?>)TypeParameterExtractor.extractTypeParameter(ch.getMethod(), DomainEvent.class))
         .collect(Collectors.toSet());
     ChannelObject channel = ChannelObject.builder()
         .channelId(key)

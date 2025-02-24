@@ -6,7 +6,7 @@ import java.lang.reflect.Type;
 
 public class TypeParameterExtractor {
 
-  public static <T> Class<?> extractTypeParameter(Method method, Class<T> expectedClass) {
+  public static <T> Class<? extends T> extractTypeParameter(Method method, Class<T> expectedClass) {
     Type[] parameterTypes = method.getGenericParameterTypes();
     if (parameterTypes.length == 0) {
       throw new IllegalArgumentException("Method must have at least one parameter");
@@ -33,6 +33,6 @@ public class TypeParameterExtractor {
       throw new IllegalArgumentException(String.format("Parameter type must be assignable to %s", expectedClass.getSimpleName()));
     }
 
-    return paramType;
+    return (Class<? extends T>) paramType;
   }
 }

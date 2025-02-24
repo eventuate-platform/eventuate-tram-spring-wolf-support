@@ -2,7 +2,6 @@ package io.eventuate.tram.spring.springwolf;
 
 import io.eventuate.tram.events.subscriber.DomainEventDispatcher;
 import io.eventuate.tram.events.subscriber.DomainEventHandler;
-import io.eventuate.tram.events.subscriber.DomainEventHandlers;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
@@ -23,23 +22,21 @@ public class OperationsFromEventHandlersScanner implements EventuateTramOperatio
 
   public ElementsWithClasses<Operation> scan() {
 
-    List<DomainEventHandlers> domainEventHandlers = domainEventDispatchers.stream()
+    Map<String, Operation> aggregateTypeToEvents = domainEventDispatchers.stream()
         .map(DomainEventDispatcher::getDomainEventHandlers)
-        .toList();
-
-    Map<String, List<DomainEventHandler>> aggregateTypeToEvents = domainEventHandlers.stream()
         .flatMap(dehs -> dehs.getHandlers().stream())
-        .collect(Collectors.groupingBy(DomainEventHandler::getAggregateType));
+        .collect(Collectors.groupingBy(DomainEventHandler::getAggregateType,
+            Collectors.collectingAndThen(
+                Collectors.toList(),
+                OperationsFromEventHandlersScanner::makeOperationForDomainEventHandlers
+            )));
 
+    return new ElementsWithClasses<>(aggregateTypeToEvents);
 
-    return new ElementsWithClasses<>(aggregateTypeToEvents.entrySet().stream()
-        .collect(Collectors.toMap(
-            Map.Entry::getKey, // key mapper
-            entry -> makeOperationForDomainEventHandlers(entry.getKey(), entry.getValue()) // value mapper
-        )));
   }
 
-  public static Operation makeOperationForDomainEventHandlers(String aggregateType, List<DomainEventHandler> eventHandlers) {
+  public static Operation makeOperationForDomainEventHandlers(List<DomainEventHandler> eventHandlersForAggregate) {
+    String aggregateType = eventHandlersForAggregate.get(0).getAggregateType();
     return Operation.builder()
         .channel(ChannelReference.builder()
             .ref("#/channels/" + aggregateType)
@@ -47,7 +44,7 @@ public class OperationsFromEventHandlersScanner implements EventuateTramOperatio
         .operationId("operationId")
         .description("my event handler")
         .action(OperationAction.RECEIVE)
-        .messages(eventHandlers.stream()
+        .messages(eventHandlersForAggregate.stream()
             .map(deh -> SpringWolfUtils.makeMessageReference(deh.getEventClass()))
             .toList())
         .build();

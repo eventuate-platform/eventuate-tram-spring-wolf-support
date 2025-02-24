@@ -35,8 +35,8 @@ public class ChannelsFromEventPublishersScanner implements EventuateTramChannels
         .channelId(aggregateType)
         .messages(MessageClassScanner.findConcreteImplementorsOf(eventBaseClass).stream()
             .collect(Collectors.toMap(
-                Class::getName, // key mapper
-                this::makeMessageReference // value mapper
+                Class::getName,
+                this::makeMessageReference
             )))
         .build();
   }
