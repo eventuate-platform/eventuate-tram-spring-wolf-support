@@ -9,7 +9,7 @@ public record ElementsWithClasses<T>(Map<String, T> elements, Set<Class<?>> clas
     this(operations, Set.of());
   }
 
-  static <T> ElementsWithClasses<T> make(Map<String, ElementWithClasses<T>> operationsWithClasses) {
+  public static <T> ElementsWithClasses<T> make(Map<String, ElementWithClasses<T>> operationsWithClasses) {
     return new ElementsWithClasses<>(operationsWithClasses.entrySet().stream()
         .collect(Collectors.toMap(Map.Entry::getKey,
             e -> e.getValue().element())),
