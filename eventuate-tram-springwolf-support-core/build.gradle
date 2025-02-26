@@ -4,8 +4,8 @@ plugins {
 }
 
 dependencies {
-    api 'io.github.springwolf:springwolf-core:1.10.0'
-    runtimeOnly 'io.github.springwolf:springwolf-ui:1.10.0'
+    api "io.github.springwolf:springwolf-core:$springwolfVersion"
+    runtimeOnly "io.github.springwolf:springwolf-ui:$springwolfVersion"
     implementation "org.springframework.boot:spring-boot-starter:$springBootVersion"
 
     testFixturesImplementation platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")

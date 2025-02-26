@@ -3,8 +3,8 @@ dependencies {
     implementation project(":eventuate-tram-springwolf-support-events")
     implementation project(":eventuate-tram-springwolf-support-sagas")
 
-    compileOnly "io.eventuate.tram.core:eventuate-tram-events:0.36.0.BUILD-SNAPSHOT"
-    compileOnly "io.eventuate.tram.core:eventuate-tram-commands:0.36.0.BUILD-SNAPSHOT"
+    compileOnly "io.eventuate.tram.core:eventuate-tram-events:$eventuateTramVersion"
+    compileOnly "io.eventuate.tram.core:eventuate-tram-commands:$eventuateTramVersion"
     compileOnly "io.eventuate.tram.sagas:eventuate-tram-sagas-orchestration-simple-dsl:$eventuateTramSagasVersion"
 
     implementation "org.springframework.boot:spring-boot-starter:$springBootVersion"
