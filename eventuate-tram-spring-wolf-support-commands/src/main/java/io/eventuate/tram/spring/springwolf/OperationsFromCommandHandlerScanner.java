@@ -2,7 +2,7 @@ package io.eventuate.tram.spring.springwolf;
 
 import io.eventuate.tram.commands.common.Command;
 import io.eventuate.tram.commands.common.CommandMessageHeaders;
-import io.eventuate.tram.spring.commands.consumer.CommandClassExtractor;
+import io.eventuate.tram.common.TypeParameterExtractor;
 import io.eventuate.tram.spring.commands.consumer.CommandHandlerInfo;
 import io.eventuate.tram.spring.commands.consumer.EventuateCommandDispatcher;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
@@ -41,14 +41,14 @@ public class OperationsFromCommandHandlerScanner implements EventuateTramOperati
         .stream()
         .collect(Collectors.toMap(
             OperationsFromCommandHandlerScanner::getOperationId,
-            ch -> makeOperationsFromCommandHandlers(ch.getEventuateCommandHandler().channel(), ch)
+            ch -> makeOperationsFromCommandHandlers(ch.getChannel(), ch)
         ));
     return ElementsWithClasses.make(operationsWithClasses);
   }
 
   private ElementWithClasses<Operation> makeOperationsFromCommandHandlers(String channel, CommandHandlerInfo ch) {
     Set<Class<?>> replyClasses = MessageClassScanner.findConcreteImplementorsOf(ch.getMethod().getReturnType());
-    Class<? extends Command> commandClass = CommandClassExtractor.extractCommandClass(ch.getMethod());
+    Class<? extends Command> commandClass = (Class<? extends Command>) TypeParameterExtractor.extractTypeParameter(ch.getMethod());
 
     Operation operation = Operation.builder()
         .channel(ChannelReference.builder()

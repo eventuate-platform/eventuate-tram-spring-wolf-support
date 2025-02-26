@@ -56,7 +56,7 @@ public class ChannelsFromCommandHandlerScannerTest {
             method.getAnnotation(EventuateCommandHandler.class);
 
         when(eventuateCommandDispatcher.getCommandHandlers())
-            .thenReturn(List.of(new CommandHandlerInfo(customerCommandHandler, eventuateCommandHandler, method)));
+            .thenReturn(List.of(new CommandHandlerInfo(customerCommandHandler, "customerCommandDispatcher", "customerService", method)));
 
         Map<String, ChannelObject> handlers = scanner.scan().elements();
 
