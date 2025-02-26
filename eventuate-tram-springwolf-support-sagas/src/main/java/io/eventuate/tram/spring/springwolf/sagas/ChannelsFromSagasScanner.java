@@ -1,8 +1,8 @@
 package io.eventuate.tram.spring.springwolf.sagas;
 
 import io.eventuate.tram.sagas.simpledsl.SimpleSaga;
-import io.eventuate.tram.spring.springwolf.ElementsWithClasses;
-import io.eventuate.tram.spring.springwolf.EventuateTramChannelsScanner;
+import io.eventuate.tram.spring.springwolf.core.ElementsWithClasses;
+import io.eventuate.tram.spring.springwolf.core.EventuateTramChannelsScanner;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,6 @@
 package io.eventuate.tram.spring.springwolf.sagas;
 
-import io.eventuate.tram.spring.springwolf.ElementsWithClasses;
+import io.eventuate.tram.spring.springwolf.core.ElementsWithClasses;
 import io.eventuate.tram.spring.springwolf.sagas.application.CreateOrderSaga;
 import io.eventuate.tram.spring.springwolf.sagas.application.CustomerServiceProxy;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;

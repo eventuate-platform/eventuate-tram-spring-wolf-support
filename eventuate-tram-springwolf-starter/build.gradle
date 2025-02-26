@@ -2,6 +2,7 @@ dependencies {
     implementation project(":eventuate-tram-springwolf-support-commands")
     implementation project(":eventuate-tram-springwolf-support-events")
     implementation project(":eventuate-tram-springwolf-support-sagas")
+    implementation "io.github.springwolf:springwolf-core:$springwolfVersion"
 
     compileOnly "io.eventuate.tram.core:eventuate-tram-events:$eventuateTramVersion"
     compileOnly "io.eventuate.tram.core:eventuate-tram-commands:$eventuateTramVersion"
@@ -11,7 +12,8 @@ dependencies {
 
     testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
     testImplementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-    testImplementation testFixtures(project(":eventuate-tram-springwolf-support-core"))
+    testImplementation project(":eventuate-tram-springwolf-support-testing")
     testImplementation "io.rest-assured:rest-assured"
+    testImplementation "io.eventuate.tram.core:eventuate-tram-spring-in-memory:$eventuateTramVersion"
 
 }

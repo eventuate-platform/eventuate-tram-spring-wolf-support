@@ -3,7 +3,7 @@ package io.eventuate.tram.spring.springwolf.sagas;
 import io.eventuate.tram.sagas.simpledsl.SimpleSaga;
 import io.eventuate.tram.sagas.simpledsl.annotations.SagaParticipantOperation;
 import io.eventuate.tram.sagas.simpledsl.annotations.SagaParticipantProxy;
-import io.eventuate.tram.spring.springwolf.MessageClassScanner;
+import io.eventuate.tram.spring.springwolf.core.MessageClassScanner;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.core.MethodIntrospector;
 

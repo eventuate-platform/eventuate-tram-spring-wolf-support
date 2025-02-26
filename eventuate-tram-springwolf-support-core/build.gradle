@@ -1,18 +1,10 @@
 
-plugins {
-    id 'java-test-fixtures'
-}
 
 dependencies {
     api "io.github.springwolf:springwolf-core:$springwolfVersion"
     runtimeOnly "io.github.springwolf:springwolf-ui:$springwolfVersion"
     implementation "org.springframework.boot:spring-boot-starter:$springBootVersion"
 
-    testFixturesImplementation platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
-    testFixturesImplementation "com.fasterxml.jackson.core:jackson-annotations"
-    testFixturesImplementation "org.assertj:assertj-core"
-    testFixturesImplementation "io.rest-assured:rest-assured"
-    testFixturesImplementation "com.fasterxml.jackson.core:jackson-databind"
 
     testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
     testImplementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"

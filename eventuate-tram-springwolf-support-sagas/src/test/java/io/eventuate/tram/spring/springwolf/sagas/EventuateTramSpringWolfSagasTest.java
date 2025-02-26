@@ -1,9 +1,9 @@
 package io.eventuate.tram.spring.springwolf.sagas;
 
 import io.eventuate.tram.spring.inmemory.TramInMemoryConfiguration;
-import io.eventuate.tram.spring.springwolf.EventuateSpringWolfConfiguration;
+import io.eventuate.tram.spring.springwolf.core.EventuateSpringWolfConfiguration;
 import io.eventuate.tram.spring.springwolf.sagas.application.*;
-import io.eventuate.tram.spring.springwolf.test.common.AsyncApiDocument;
+import io.eventuate.tram.spring.springwolf.testing.AsyncApiDocument;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
