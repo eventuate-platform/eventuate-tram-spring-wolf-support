@@ -1,12 +1,12 @@
 dependencies {
-    implementation project(":eventuate-tram-spring-wolf-support-core")
+    implementation project(":eventuate-tram-springwolf-support-core")
 
 
     implementation "org.springframework.boot:spring-boot-starter:$springBootVersion"
     compileOnly "io.eventuate.tram.sagas:eventuate-tram-sagas-orchestration-simple-dsl:$eventuateTramSagasVersion"
 
     testImplementation "io.eventuate.tram.sagas:eventuate-tram-sagas-orchestration-simple-dsl:$eventuateTramSagasVersion"
-    testImplementation testFixtures(project(":eventuate-tram-spring-wolf-support-core"))
+    testImplementation testFixtures(project(":eventuate-tram-springwolf-support-core"))
     testImplementation "io.eventuate.examples.common:eventuate-examples-common-money-jakarta9:$eventuateCommonExamplesVersion"
     testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
     testImplementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"

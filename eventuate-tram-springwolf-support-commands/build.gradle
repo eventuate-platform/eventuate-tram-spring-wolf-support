@@ -1,9 +1,9 @@
 dependencies {
-    implementation project(":eventuate-tram-spring-wolf-support-core")
+    implementation project(":eventuate-tram-springwolf-support-core")
     compileOnly "io.eventuate.tram.core:eventuate-tram-spring-commands:0.36.0.BUILD-SNAPSHOT"
     compileOnly "io.eventuate.tram.core:eventuate-tram-common:0.36.0.BUILD-SNAPSHOT"
 
-    testImplementation testFixtures(project(":eventuate-tram-spring-wolf-support-core"))
+    testImplementation testFixtures(project(":eventuate-tram-springwolf-support-core"))
     testImplementation "io.eventuate.examples.common:eventuate-examples-common-money-jakarta9:$eventuateCommonExamplesVersion"
     testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
     testImplementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
