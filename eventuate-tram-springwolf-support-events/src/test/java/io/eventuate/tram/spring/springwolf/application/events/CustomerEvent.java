@@ -4,5 +4,5 @@ import io.eventuate.tram.events.common.DomainEvent;
 
 public interface CustomerEvent extends DomainEvent {
 
-    public String getId();
+    String getId();
 }

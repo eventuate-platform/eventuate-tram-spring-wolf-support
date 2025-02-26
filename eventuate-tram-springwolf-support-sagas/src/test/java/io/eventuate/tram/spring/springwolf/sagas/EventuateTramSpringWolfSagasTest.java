@@ -42,7 +42,7 @@ public class EventuateTramSpringWolfSagasTest {
         .as("AsyncAPI version should be 3.0.0")
         .isEqualTo("3.0.0");
 
-    doc.assertSendsMessage("io.eventuate.tram.spring.springwolf.sagas.application.CreateOrderSaga-customerService-reserveCredit",
+    doc.assertSendsMessage(CreateOrderSaga.class.getName() + "-customerService-reserveCredit",
         "customerService",
         ReserveCreditCommand.class.getName());
 
@@ -51,7 +51,6 @@ public class EventuateTramSpringWolfSagasTest {
             .forEach(c -> doc.assertReceivesMessage("receive-io.eventuate.tram.spring.springwolf.sagas.application.CreateOrderSaga-reply",
                 "io.eventuate.tram.spring.springwolf.sagas.application.CreateOrderSaga-reply",
                 c));
-    ;
   }
 
 }
