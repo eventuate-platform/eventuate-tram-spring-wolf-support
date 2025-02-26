@@ -1,4 +1,4 @@
-package io.eventuate.tram.spring.springwolf.testing;
+package io.eventuate.tram.spring.springwolf.events;
 
 public class Customer {
     private String id;

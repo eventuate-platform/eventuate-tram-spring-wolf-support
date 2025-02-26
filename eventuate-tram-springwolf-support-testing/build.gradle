@@ -1,13 +1,9 @@
 dependencies {
     api project(":eventuate-tram-springwolf-support-core")
 
-    implementation platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
-    implementation "com.fasterxml.jackson.core:jackson-annotations"
-    implementation "org.assertj:assertj-core"
-    implementation "io.rest-assured:rest-assured"
-    implementation "com.fasterxml.jackson.core:jackson-databind"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
+    implementation "org.assertj:assertj-core:$assertjVersion"
+    implementation "io.rest-assured:rest-assured:$restAssuredVersion"
+    implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
 
-    testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
-    testImplementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-    testImplementation "io.eventuate.util:eventuate-util-test"
 }

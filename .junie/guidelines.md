@@ -19,6 +19,9 @@ The project is organized into several modules:
 - `eventuate-tram-springwolf-support-sagas`: Saga pattern support
 - `eventuate-tram-springwolf-starter`: Spring Boot starter for easy integration
 
+Dependency versions are specified in `gradle.properties`.
+The `version` property must be on the last line.
+
 ## Build and Run Instructions
 1. Build the project:
    ```bash
