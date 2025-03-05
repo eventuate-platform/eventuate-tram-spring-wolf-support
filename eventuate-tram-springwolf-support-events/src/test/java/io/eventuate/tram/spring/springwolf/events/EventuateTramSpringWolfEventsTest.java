@@ -43,7 +43,7 @@ public class EventuateTramSpringWolfEventsTest {
   private static final String ORDER_EVENT_SUBSCRIBER = OrderEventConsumer.class.getName() + ".handleOrderCreatedEvent";
 
   @Test
-  public void shouldExposeSpringWolf() throws IOException {
+  public void shouldExposeSpringWolf() {
     AsyncApiDocument doc = AsyncApiDocument.getSpringWolfDoc();
 
     assertThat(doc.getVersion())

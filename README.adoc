@@ -1,0 +1,91 @@
+= Eventuate Tram Springwolf (Async API) Support
+
+This project is a https://github.com/springwolf/springwolf-core[Springwolf plugin] for Eventuate Tram and Eventuate Sagas that documents Eventuate-based APIs using https://www.asyncapi.com/[Async API].
+
+In the same way that https://springdoc.org/[springdoc-openapi]  exposes a `/v3/api-docs` endpoint, this project exposes an `/springwolf/docs` endpoint that documents the Eventuate-based APIs.
+
+== An Eventuate project
+
+image::https://eventuate.io/i/logo.gif[]
+
+This project is part of http://eventuate.io[Eventuate], which is a microservices collaboration platform.
+
+== Getting started
+
+[cols="a,a"]
+|===
+| Snapshot
+| image:https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fsnapshots.repositories.eventuate.io%2Frepository%2Fio%2Feventuate%2Ftram%2Fspring%2Fspringwolf%2Feventuate-tram-springwolf-starter%2Fmaven-metadata.xml[]
+|===
+
+
+To use Eventuate Tram Springwolf, add the following dependency to your project:
+
+[source]
+----
+dependencies {
+    implementation "io.eventuate.tram.spring.springwolf:eventuate-tram-springwolf-support-core:$eventuateTramSpringWolfSupportVersion"
+----
+
+Define these properties in `application.properties`:
+
+[source]
+----
+springwolf.docket.info.title=${spring.application.name}
+springwolf.docket.info.version=1.0.0
+springwolf.docket.base-package=io.eventuate.tram.spring.springwolf.someexample
+springwolf.docket.scanner.async-listener.enabled=false
+
+springwolf.docket.servers.eventuate-producer.protocol=eventuate-outbox
+springwolf.docket.servers.eventuate-producer.host=${spring.datasource.url}
+springwolf.docket.servers.eventuate-consumer.protocol=kafka
+springwolf.docket.servers.eventuate-consumer.host=${eventuatelocal.kafka.bootstrap.servers}
+----
+
+Note: `springwolf.docket.base-package` needs to be set even though it is not used in the code.
+
+== Testing support
+
+To use the testing support, add the following dependency to your project:
+
+[source]
+----
+dependencies {
+    testImplementation "io.eventuate.tram.spring.springwolf:eventuate-tram-springwolf-support-testing:$eventuateTramSpringWolfSupportVersion"
+----
+
+You can then write a test like this:
+
+[source,java]
+----
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class EventuateTramSpringWolfEventsTest {
+
+  @LocalServerPort
+  private int port;
+
+  @BeforeEach
+  public void setup() {
+    RestAssured.port = port;
+  }
+
+  @Test
+  public void shouldExposeSpringWolf() {
+    AsyncApiDocument doc = AsyncApiDocument.getSpringWolfDoc();
+
+    assertThat(doc.getVersion())
+        .as("AsyncAPI version should be 3.0.0")
+        .isEqualTo("3.0.0");
+
+    doc.assertSendsMessage(...);
+    doc.assertReceivesMessage(...);
+    doc.assertReceivesMessage(...);
+  }
+...
+----
+
+== Contributing
+
+Contributions are welcome.
+
+Please sign a https://chrisrichardson.net/legal/[contributor license agreement].
