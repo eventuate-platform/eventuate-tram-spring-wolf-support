@@ -13,7 +13,7 @@ buildscript {
 
 
 allprojects {
-    group = "io.eventuate.tram.spring.springwolf"
+    group = "io.eventuate.tram.springwolf"
 }
 
 apply plugin: "io.eventuate.plugins.gradle.publish.EventuatePublish"

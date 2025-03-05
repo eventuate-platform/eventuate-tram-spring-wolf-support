@@ -15,7 +15,7 @@ This project is part of http://eventuate.io[Eventuate], which is a microservices
 [cols="a,a"]
 |===
 | Snapshot
-| image:https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fsnapshots.repositories.eventuate.io%2Frepository%2Fio%2Feventuate%2Ftram%2Fspring%2Fspringwolf%2Feventuate-tram-springwolf-starter%2Fmaven-metadata.xml[]
+| image:https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fsnapshots.repositories.eventuate.io%2Frepository%2Fio%2Feventuate%2Ftram%2Fspringwolf%2Feventuate-tram-springwolf-support-starter%2Fmaven-metadata.xml[]
 |===
 
 

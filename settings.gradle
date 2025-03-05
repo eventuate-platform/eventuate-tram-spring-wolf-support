@@ -1,8 +1,9 @@
 rootProject.name = 'eventuate-tram-springwolf-support'
 
+include 'eventuate-tram-springwolf-support-bom'
 include 'eventuate-tram-springwolf-support-core'
 include 'eventuate-tram-springwolf-support-events'
 include 'eventuate-tram-springwolf-support-commands'
 include 'eventuate-tram-springwolf-support-sagas'
-include 'eventuate-tram-springwolf-starter'
+include 'eventuate-tram-springwolf-support-starter'
 include 'eventuate-tram-springwolf-support-testing'
