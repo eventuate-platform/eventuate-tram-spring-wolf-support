@@ -53,7 +53,6 @@ public class OperationsFromAnnotationBasedEventHandlerScanner implements Eventua
             .ref("#/channels/" + channel)
             .build())
         .operationId(getOperationId(eventHandlers))
-        .description("my event handler")
         .action(OperationAction.RECEIVE)
         .messages(List.of(SpringWolfUtils.makeMessageReference(classz)))
         .build();

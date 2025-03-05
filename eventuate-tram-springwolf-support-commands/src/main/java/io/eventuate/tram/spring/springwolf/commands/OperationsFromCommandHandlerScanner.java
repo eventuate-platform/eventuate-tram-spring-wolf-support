@@ -56,7 +56,6 @@ public class OperationsFromCommandHandlerScanner implements EventuateTramOperati
             .ref("#/channels/" + channel)
             .build())
         .operationId(getOperationId(ch))
-        .description("my event handler")
         .action(OperationAction.RECEIVE)
         .messages(List.of(SpringWolfUtils.makeMessageReference(commandClass)))
         .reply(OperationReply.builder()

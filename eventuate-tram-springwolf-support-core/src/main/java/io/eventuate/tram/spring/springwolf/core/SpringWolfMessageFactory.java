@@ -20,7 +20,6 @@ public class SpringWolfMessageFactory {
     PayloadSchemaObject payloadSchemaObject = payloadService.buildSchema("application/json", messageClass);
     MessageObject message = MessageObject.builder()
         .messageId(messageClass.getName())
-        .description("my event handler")
         .payload(MessagePayload.of(
             MultiFormatSchema.builder().schema(payloadSchemaObject.payload()).build()))
         .build();

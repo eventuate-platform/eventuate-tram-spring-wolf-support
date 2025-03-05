@@ -37,7 +37,6 @@ public class OperationsFromEventPublisherScanner implements EventuateTramOperati
             .ref("#/channels/" + ep.getAggregateClass().getName())
             .build())
         .operationId(ep.getClass().getName())
-        .description("my event sender")
         .action(OperationAction.SEND)
         .messages(findConcreteImplementorsOf(ep.getEventBaseClass()).stream()
             .map(SpringWolfUtils::makeMessageReference)
