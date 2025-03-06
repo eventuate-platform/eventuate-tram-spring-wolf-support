@@ -12,8 +12,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import java.io.IOException;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -36,7 +34,7 @@ public class EventuateTramSpringWolfEventsTest {
   private static final String CUSTOMER_CHANNEL = Customer.class.getName();
   private static final String CUSTOMER_CREATED_EVENT = CustomerCreatedEvent.class.getName();
   private static final String CUSTOMER_EVENT_PUBLISHER = CustomerEventPublisherImpl.class.getName();
-  private static final String CUSTOMER_EVENT_SUBSCRIBER = "operationId";
+  private static final String CUSTOMER_EVENT_SUBSCRIBER = "receive-customerServiceEvents-" + Customer.class.getName();
 
   private static final String ORDER_CHANNEL = "orderServiceEvents";
   private static final String ORDER_CREATED_EVENT = OrderCreatedEvent.class.getName();

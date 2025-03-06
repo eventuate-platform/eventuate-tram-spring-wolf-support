@@ -42,7 +42,7 @@ public class OperationsFromAnnotationBasedEventHandlerScanner implements Eventua
         .stream()
         .collect(Collectors.toMap(
             OperationsFromAnnotationBasedEventHandlerScanner::getOperationId,
-            ch -> makeOperationFromEventHandler(ch.getEventuateDomainEventHandler().channel(), ch)
+            ch -> makeOperationFromEventHandler(ch.getChannel(), ch)
         ));
   }
 

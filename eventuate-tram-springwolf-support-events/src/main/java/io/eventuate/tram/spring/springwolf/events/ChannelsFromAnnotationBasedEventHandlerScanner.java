@@ -29,7 +29,7 @@ public class ChannelsFromAnnotationBasedEventHandlerScanner implements Eventuate
 
   private ElementsWithClasses<ChannelObject> makeChannelsFromEventHandlers(List<EventuateDomainEventHandlerInfo> eventHandlers) {
     Map<String, ElementWithClasses<ChannelObject>> channelsWithClasses = eventHandlers.stream()
-        .collect(Collectors.groupingBy((EventuateDomainEventHandlerInfo eventuateCommandHandler) -> eventuateCommandHandler.getEventuateDomainEventHandler().channel()))
+        .collect(Collectors.groupingBy(EventuateDomainEventHandlerInfo::getChannel))
         .entrySet()
         .stream()
         .collect(Collectors.toMap(

@@ -65,9 +65,9 @@ public class AsyncApiDocument {
     assertThat(operations).isEmpty();
   }
 
-  public void assertReceivesMessageAndReplies(String subscriberId, String channel, String eventType, Set<String> replyTypes) {
-    assertMessagesDefined(add(replyTypes, eventType));;
-    assertReceivesMessage(subscriberId, channel, eventType);
+  public void assertReceivesMessageAndReplies(String subscriberId, String channel, String messageType, Set<String> replyTypes) {
+    assertMessagesDefined(add(replyTypes, messageType));;
+    assertReceivesMessage(subscriberId, channel, messageType);
     Map<String, Operation> operations = getOperations();
     Operation operation = operations.get(subscriberId);
     assertThat(operation.getReply().getMessages().stream().map(messageReference ->

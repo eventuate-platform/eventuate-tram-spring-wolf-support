@@ -29,12 +29,13 @@ public class EventuateTramOperationsScannerManager implements OperationsScanner 
         .collect(Collectors.toSet())
         .forEach(springWolfMessageFactory::makeMessageFromClass);
 
-    return results.stream()
-            .map(ElementsWithClasses::elements)
-            .reduce(new HashMap<>(), (result, map) -> {
-              result.putAll(map);
-              return result;
-            });
+    Map<String, Operation> scanResult = results.stream()
+        .map(ElementsWithClasses::elements)
+        .reduce(new HashMap<>(), (result, map) -> {
+          result.putAll(map);
+          return result;
+        });
+    return scanResult;
   }
 
 
