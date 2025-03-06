@@ -1,0 +1,9 @@
+dependencies {
+    api project(":eventuate-tram-springwolf-support-core")
+
+    implementation "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
+    implementation "org.assertj:assertj-core:$assertjVersion"
+    implementation "io.rest-assured:rest-assured:$restAssuredVersion"
+    implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+
+}

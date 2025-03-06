@@ -1,0 +1,15 @@
+dependencies {
+    implementation project(":eventuate-tram-springwolf-support-core")
+    compileOnly "io.eventuate.tram.core:eventuate-tram-spring-commands:$eventuateTramVersion"
+    compileOnly "io.eventuate.tram.core:eventuate-tram-common:$eventuateTramVersion"
+
+    testImplementation project(":eventuate-tram-springwolf-support-testing")
+    testImplementation "io.eventuate.examples.common:eventuate-examples-common-money-jakarta9:$eventuateCommonExamplesVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    testImplementation "io.rest-assured:rest-assured"
+    testImplementation "io.eventuate.tram.core:eventuate-tram-spring-in-memory:$eventuateTramVersion"
+    testImplementation "io.eventuate.tram.core:eventuate-tram-spring-commands-starter"
+    testImplementation "io.eventuate.tram.core:eventuate-tram-test-util"
+    testImplementation "io.eventuate.util:eventuate-util-test"
+}

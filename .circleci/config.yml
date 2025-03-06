@@ -1,0 +1,14 @@
+version: 2.1
+orbs:
+  eventuate-gradle-build-and-test: "eventuate_io/eventuate-gradle-build-and-test@0.2.9"
+workflows:
+  build-test-and-deploy:
+    jobs:
+      - eventuate-gradle-build-and-test/build-and-test:
+          name: build-and-publish
+          java_version_to_install: "17"
+          context:
+            - publish
+          script: |
+            ./gradlew build
+            ./gradlew publishEventuateArtifacts

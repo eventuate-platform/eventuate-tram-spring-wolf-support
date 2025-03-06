@@ -1,0 +1,13 @@
+
+
+dependencies {
+    api "io.github.springwolf:springwolf-core:$springwolfVersion"
+    runtimeOnly "io.github.springwolf:springwolf-ui:$springwolfVersion"
+    implementation "org.springframework.boot:spring-boot-starter:$springBootVersion"
+
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    testImplementation "io.rest-assured:rest-assured"
+    testImplementation "io.eventuate.util:eventuate-util-test"
+}
