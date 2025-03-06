@@ -76,5 +76,3 @@ gradle.projectsEvaluated {
 //        resolutionStrategy.cacheChangingModulesFor 10, 'minutes'
 //    }
 //}
-
-

@@ -1,3 +1,5 @@
+apply plugin: 'io.eventuate.tram.springwolf.validate-asyncapi'
+
 dependencies {
     implementation project(":eventuate-tram-springwolf-support-core")
 

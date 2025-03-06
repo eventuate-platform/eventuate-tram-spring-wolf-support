@@ -7,6 +7,7 @@ import io.eventuate.tram.spring.commands.consumer.CommandHandlerInfo;
 import io.eventuate.tram.spring.commands.consumer.EventuateCommandDispatcher;
 import io.eventuate.tram.spring.springwolf.core.*;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
+import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationReply;
@@ -57,7 +58,7 @@ public class OperationsFromCommandHandlerScanner implements EventuateTramOperati
             .build())
         .operationId(getOperationId(ch))
         .action(OperationAction.RECEIVE)
-        .messages(List.of(SpringWolfUtils.makeMessageReference(commandClass)))
+        .messages(List.of(MessageReference.toChannelMessage(channel, commandClass.getName())))
         .reply(OperationReply.builder()
             .messages(replyClasses.stream()
                 .map(SpringWolfUtils::makeMessageReference)

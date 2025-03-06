@@ -4,8 +4,8 @@ import io.eventuate.tram.events.subscriber.DomainEventDispatcher;
 import io.eventuate.tram.events.subscriber.DomainEventHandler;
 import io.eventuate.tram.spring.springwolf.core.ElementsWithClasses;
 import io.eventuate.tram.spring.springwolf.core.EventuateTramOperationsScanner;
-import io.eventuate.tram.spring.springwolf.core.SpringWolfUtils;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
+import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import org.springframework.stereotype.Component;
@@ -49,7 +49,7 @@ public class OperationsFromEventHandlersScanner implements EventuateTramOperatio
         .action(OperationAction.RECEIVE)
         .messages(eventHandlersForAggregate.stream()
             .map(DomainEventHandler::getEventClass)
-            .map(SpringWolfUtils::makeMessageReference)
+            .map(clasz -> MessageReference.toChannelMessage(aggregateType, clasz.getName()))
             .toList())
         .build();
   }

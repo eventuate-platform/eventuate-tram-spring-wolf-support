@@ -5,6 +5,7 @@ import io.eventuate.tram.spring.events.subscriber.EventuateDomainEventDispatcher
 import io.eventuate.tram.spring.events.subscriber.EventuateDomainEventHandlerInfo;
 import io.eventuate.tram.spring.springwolf.core.*;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
+import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class OperationsFromAnnotationBasedEventHandlerScanner implements Eventua
             .build())
         .operationId(getOperationId(eventHandlers))
         .action(OperationAction.RECEIVE)
-        .messages(List.of(SpringWolfUtils.makeMessageReference(classz)))
+        .messages(List.of(MessageReference.toChannelMessage(channel, classz.getName())))
         .build();
     return new ElementWithClasses<>(operation, Set.of(classz));
   }

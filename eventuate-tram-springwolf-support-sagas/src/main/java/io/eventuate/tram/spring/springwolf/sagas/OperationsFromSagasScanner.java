@@ -30,31 +30,33 @@ public class OperationsFromSagasScanner implements EventuateTramOperationsScanne
   }
 
   private Map<String, Operation> makeOperations(Set<SendOperation> sendOperations, Set<ReceiveOperation> receiveOperations) {
-    Map<String, Operation> sendMap = sendOperations.stream().collect(Collectors.toMap(SendOperation::operationName, this::makeOperation));
+    Map<String, Operation> sendMap = sendOperations.stream().collect(Collectors.toMap(SendOperation::operationName, this::makeSendOperation));
     Map<String, Operation> receiveMap = receiveOperations.stream().collect(Collectors.toMap(ReceiveOperation::operationName, this::makeReceiveOperation));
     Map<String, Operation> result = new HashMap<>(sendMap);
     result.putAll(receiveMap);
     return result;
   }
 
-  private Operation makeOperation(SendOperation so) {
+  private Operation makeSendOperation(SendOperation so) {
+    String channel = so.commandChannel();
     return Operation.builder()
         .operationId(so.operationName())
         .action(OperationAction.SEND)
         .channel(ChannelReference.builder()
-            .ref("#/channels/" + so.commandChannel())
+            .ref("#/channels/" + channel)
             .build())
-        .messages(List.of(makeMessageReference(so.commandClass())))
+        .messages(List.of(MessageReference.toChannelMessage(channel, so.commandClass().getName())))
         .build();
   }
   private Operation makeReceiveOperation(ReceiveOperation ro) {
+    String channel = ro.replyChannel();
     return Operation.builder()
         .operationId(ro.operationName())
         .action(OperationAction.RECEIVE)
         .channel(ChannelReference.builder()
-            .ref("#/channels/" + ro.replyChannel())
+            .ref("#/channels/" + channel)
             .build())
-        .messages(ro.classes().stream().map(this::makeMessageReference).collect(Collectors.toList()))
+        .messages(ro.classes().stream().map(aClass -> MessageReference.toChannelMessage(channel, aClass.getName())).collect(Collectors.toList()))
         .build();
   }
 
