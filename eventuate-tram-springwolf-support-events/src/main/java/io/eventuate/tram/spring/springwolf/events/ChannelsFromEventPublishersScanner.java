@@ -37,6 +37,7 @@ public class ChannelsFromEventPublishersScanner implements EventuateTramChannels
   public ChannelObject makeChannelObjectFromEventPublisher(String aggregateType, Class eventBaseClass) {
     return ChannelObject.builder()
         .channelId(aggregateType)
+        .address(aggregateType)
         .messages(MessageClassScanner.findConcreteImplementorsOf(eventBaseClass).stream()
             .collect(Collectors.toMap(
                 Class::getName,

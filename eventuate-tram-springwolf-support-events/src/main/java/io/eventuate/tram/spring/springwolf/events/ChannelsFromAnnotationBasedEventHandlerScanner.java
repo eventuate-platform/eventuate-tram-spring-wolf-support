@@ -45,6 +45,7 @@ public class ChannelsFromAnnotationBasedEventHandlerScanner implements Eventuate
         .collect(Collectors.toSet());
     ChannelObject channel = ChannelObject.builder()
         .channelId(key)
+        .address(key)
         .messages(eventClasses
             .stream()
             .collect(Collectors.toMap(

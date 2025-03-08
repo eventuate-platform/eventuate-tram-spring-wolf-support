@@ -71,10 +71,14 @@ public class AsyncApiDocument {
     Map<String, Operation> operations = getOperations();
     Operation operation = operations.get(subscriberId);
     assertThat(operation.getReply().getMessages().stream().map(messageReference ->
-        messageReference.getRef().startsWith("#/components/messages/") ?
-            messageReference.getRef().substring("#/components/messages/".length()) : messageReference.getRef()))
+        lastSegmentOfRef(messageReference.getRef())))
         .as("Reply messages should exist")
         .containsAll(replyTypes);
+  }
+
+  private static String lastSegmentOfRef(String s) {
+    var splits = s.split("/");
+    return splits[splits.length - 1];
   }
 
   private void assertMessagesDefined(Set<String> messageTypes) {

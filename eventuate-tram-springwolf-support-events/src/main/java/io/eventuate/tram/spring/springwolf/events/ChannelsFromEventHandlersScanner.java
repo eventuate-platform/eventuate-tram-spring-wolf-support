@@ -46,6 +46,7 @@ public class ChannelsFromEventHandlersScanner implements EventuateTramChannelsSc
 
     ChannelObject channelObject = ChannelObject.builder()
         .channelId(aggregateType)
+        .address(aggregateType)
         .messages(classes.stream()
             .collect(Collectors.toMap(
                 Class::getName,

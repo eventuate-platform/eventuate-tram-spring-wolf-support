@@ -28,7 +28,7 @@ public class ChannelsFromSagasScanner implements EventuateTramChannelsScanner {
     Map<String, Set<Class<?>>> commandChannelsToClasses = makCommandChannelsToClasses(sagas);
     Map<String, Set<Class<?>>> replyChannelsToClasses = makeReplyChannelsToClasses(sagas);
     Map<String, Set<Class<?>>> allChannels = MapUtils.combineMaps(commandChannelsToClasses, replyChannelsToClasses);
-    return new ElementsWithClasses<ChannelObject>(makeChannelObjects(allChannels), makeAllClasses(allChannels));
+    return new ElementsWithClasses<>(makeChannelObjects(allChannels), makeAllClasses(allChannels));
   }
 
   private Map<String, ChannelObject> makeChannelObjects(Map<String, Set<Class<?>>> allChannels) {

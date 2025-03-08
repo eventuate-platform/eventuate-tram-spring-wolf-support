@@ -14,4 +14,7 @@ dependencies {
     testImplementation "io.eventuate.tram.core:eventuate-tram-spring-commands-starter"
     testImplementation "io.eventuate.tram.core:eventuate-tram-test-util"
     testImplementation "io.eventuate.util:eventuate-util-test"
+
+    testRuntimeOnly "io.github.springwolf:springwolf-ui:$springwolfVersion"
+
 }

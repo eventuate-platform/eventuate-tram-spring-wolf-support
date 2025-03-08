@@ -5,7 +5,10 @@ import io.eventuate.tram.commands.common.CommandMessageHeaders;
 import io.eventuate.tram.common.TypeParameterExtractor;
 import io.eventuate.tram.spring.commands.consumer.CommandHandlerInfo;
 import io.eventuate.tram.spring.commands.consumer.EventuateCommandDispatcher;
-import io.eventuate.tram.spring.springwolf.core.*;
+import io.eventuate.tram.spring.springwolf.core.ElementWithClasses;
+import io.eventuate.tram.spring.springwolf.core.ElementsWithClasses;
+import io.eventuate.tram.spring.springwolf.core.EventuateTramOperationsScanner;
+import io.eventuate.tram.spring.springwolf.core.MessageClassScanner;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelReference;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
 import io.github.springwolf.asyncapi.v3.model.operation.Operation;
@@ -43,26 +46,34 @@ public class OperationsFromCommandHandlerScanner implements EventuateTramOperati
         .stream()
         .collect(Collectors.toMap(
             OperationsFromCommandHandlerScanner::getOperationId,
-            ch -> makeOperationsFromCommandHandlers(ch.getChannel(), ch)
+            ch -> makeOperationFromCommandHandler(ch.getChannel(), ch)
         ));
     return ElementsWithClasses.make(operationsWithClasses);
   }
 
-  private ElementWithClasses<Operation> makeOperationsFromCommandHandlers(String channel, CommandHandlerInfo ch) {
+  private ElementWithClasses<Operation> makeOperationFromCommandHandler(String channel, CommandHandlerInfo ch) {
     Set<Class<?>> replyClasses = MessageClassScanner.findConcreteImplementorsOf(ch.getMethod().getReturnType());
     Class<? extends Command> commandClass = (Class<? extends Command>) TypeParameterExtractor.extractTypeParameter(ch.getMethod());
-
+    String replyChannel = OperationsFromCommandHandlerScanner.getOperationId(ch) + "-reply";
     Operation operation = Operation.builder()
         .channel(ChannelReference.builder()
             .ref("#/channels/" + channel)
             .build())
         .operationId(getOperationId(ch))
         .action(OperationAction.RECEIVE)
+//
+//        .bindings(Map.of("eventuate-outbox", KafkaOperationBinding.builder()
+//            .groupId(SchemaObject.builder().constValue("Foo").build())
+//            .build()))
+
         .messages(List.of(MessageReference.toChannelMessage(channel, commandClass.getName())))
         .reply(OperationReply.builder()
             .messages(replyClasses.stream()
-                .map(SpringWolfUtils::makeMessageReference)
+                .map(clasz -> MessageReference.toChannelMessage(replyChannel, clasz.getName()))
                 .toList())
+            .channel(ChannelReference.builder()
+                .ref("#/channels/" + replyChannel)
+                .build())
             .address(OperationReplyAddress.builder()
                 .location("$message.header#/" + CommandMessageHeaders.REPLY_TO)
                 .build())
@@ -72,7 +83,7 @@ public class OperationsFromCommandHandlerScanner implements EventuateTramOperati
     return new ElementWithClasses<>(operation, add(replyClasses, commandClass));
   }
 
-  private static String getOperationId(CommandHandlerInfo ch) {
+  public static String getOperationId(CommandHandlerInfo ch) {
     return ch.getMethod().getDeclaringClass().getName() + "." + ch.getMethod().getName();
   }
 
