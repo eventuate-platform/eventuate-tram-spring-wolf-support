@@ -39,6 +39,7 @@ public class ChannelsFromSagasScanner implements EventuateTramChannelsScanner {
   private ChannelObject makeChannelObject(String channel, Set<Class<?>> messageClasses) {
     return ChannelObject.builder()
         .channelId(channel)
+        .address(channel)
         .messages(messageClasses.stream().collect(Collectors.toMap(Class::getName, this::makeMessageReference)))
         .build();
   }

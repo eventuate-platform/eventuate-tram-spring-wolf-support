@@ -53,4 +53,14 @@ public class EventuateTramSpringWolfEventsTest {
     doc.assertReceivesMessage(ORDER_EVENT_SUBSCRIBER, ORDER_CHANNEL, ORDER_CREATED_EVENT);
   }
 
+  @Test
+  public void shouldExposeSpringWolfUi() {
+
+    RestAssured.given()
+        .get("/springwolf/asyncapi-ui.html")
+        .then()
+        .statusCode(200);
+
+  }
+
 }

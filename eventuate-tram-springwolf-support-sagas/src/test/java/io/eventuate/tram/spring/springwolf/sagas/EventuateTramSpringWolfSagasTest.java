@@ -53,4 +53,14 @@ public class EventuateTramSpringWolfSagasTest {
                 c));
   }
 
+  @Test
+  public void shouldExposeSpringWolfUi() {
+
+    RestAssured.given()
+        .get("/springwolf/asyncapi-ui.html")
+        .then()
+        .statusCode(200);
+
+  }
+
 }
