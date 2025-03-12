@@ -11,9 +11,9 @@ dependencies {
     testImplementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
     testImplementation "io.rest-assured:rest-assured"
     testImplementation "io.eventuate.tram.core:eventuate-tram-spring-in-memory:$eventuateTramVersion"
-    testImplementation "io.eventuate.tram.core:eventuate-tram-spring-commands-starter"
-    testImplementation "io.eventuate.tram.core:eventuate-tram-test-util"
-    testImplementation "io.eventuate.util:eventuate-util-test"
+    testImplementation "io.eventuate.tram.core:eventuate-tram-spring-commands-starter:$eventuateTramVersion"
+    testImplementation "io.eventuate.tram.core:eventuate-tram-test-util:$eventuateTramVersion"
+    testImplementation "io.eventuate.util:eventuate-util-test:$eventuateUtilVersion"
 
     testRuntimeOnly "io.github.springwolf:springwolf-ui:$springwolfVersion"
 
