@@ -24,7 +24,9 @@ To use Eventuate Tram Springwolf, add the following dependency to your project:
 [source]
 ----
 dependencies {
-    implementation "io.eventuate.tram.spring.springwolf:eventuate-tram-springwolf-support-core:$eventuateTramSpringWolfSupportVersion"
+    implementation(platform("io.eventuate.platform:eventuate-platform-dependencies:$eventuatePlatformVersion"))
+
+    runtimeOnly "io.eventuate.tram.springwolf:eventuate-tram-springwolf-support-starter"
 ----
 
 Define these properties in `application.properties`:
@@ -51,10 +53,10 @@ To use the testing support, add the following dependency to your project:
 [source]
 ----
 dependencies {
-    testImplementation "io.eventuate.tram.spring.springwolf:eventuate-tram-springwolf-support-testing:$eventuateTramSpringWolfSupportVersion"
+    testImplementation "io.eventuate.tram.springwolf:eventuate-tram-springwolf-support-testing"
 ----
 
-You can then write a test like this:
+You can then write a test that makes assertions about the generated Async API document:
 
 [source,java]
 ----
