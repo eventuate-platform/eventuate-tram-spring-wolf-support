@@ -86,6 +86,13 @@ public class EventuateTramSpringWolfEventsTest {
 ...
 ----
 
+== Example code
+
+The development branches of the following projects use Eventuate Tram Springwolf:
+
+* https://github.com/eventuate-tram/eventuate-tram-examples-customers-and-orders/tree/development[eventuate-tram-examples-customers-and-orders]
+* https://github.com/eventuate-tram/eventuate-tram-sagas-examples-customers-and-orders/tree/development[eventuate-tram-sagas-examples-customers-and-orders]
+
 == Contributing
 
 Contributions are welcome.
