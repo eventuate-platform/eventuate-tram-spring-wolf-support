@@ -52,7 +52,11 @@ tasks.register('copySpringwolfDocs') {
     group = 'documentation'
     description = 'Copies springwolf.json files from build directories to example-asyncapi-docs'
 
-    dependsOn("test")
+    subprojects.each { subproject ->
+        if (!subproject.name.endsWith('-starter') && !subproject.name.endsWith('-bom')) {
+            dependsOn "${subproject.path}:test"
+        }
+    }
 
     doLast {
         def targetDir = project.file('example-asyncapi-docs')

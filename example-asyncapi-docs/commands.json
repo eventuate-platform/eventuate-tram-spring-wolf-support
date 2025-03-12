@@ -1,7 +1,7 @@
 {
     "asyncapi": "3.0.0",
     "info": {
-        "title": "${spring.application.name}",
+        "title": "eventuate-tram-springwolf-support-commands",
         "version": "1.0.0",
         "x-generator": "springwolf"
     },
