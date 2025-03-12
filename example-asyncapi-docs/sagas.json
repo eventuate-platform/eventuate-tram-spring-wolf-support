@@ -1,0 +1,211 @@
+{
+    "asyncapi": "3.0.0",
+    "info": {
+        "title": "${spring.application.name}",
+        "version": "1.0.0",
+        "x-generator": "springwolf"
+    },
+    "defaultContentType": "application/json",
+    "servers": {
+        "eventuate-consumer": {
+            "host": "${eventuatelocal.kafka.bootstrap.servers}",
+            "protocol": "kafka"
+        },
+        "eventuate-producer": {
+            "host": "jdbc:mysql://localhost/example_db",
+            "protocol": "eventuate-outbox"
+        }
+    },
+    "channels": {
+        "customerService": {
+            "address": "customerService",
+            "messages": {
+                "io.eventuate.tram.spring.springwolf.sagas.application.ReserveCreditCommand": {
+                    "$ref": "#/components/messages/io.eventuate.tram.spring.springwolf.sagas.application.ReserveCreditCommand"
+                }
+            }
+        },
+        "io.eventuate.tram.spring.springwolf.sagas.application.CreateOrderSaga-reply": {
+            "address": "io.eventuate.tram.spring.springwolf.sagas.application.CreateOrderSaga-reply",
+            "messages": {
+                "io.eventuate.tram.spring.springwolf.sagas.application.CustomerCreditLimitExceeded": {
+                    "$ref": "#/components/messages/io.eventuate.tram.spring.springwolf.sagas.application.CustomerCreditLimitExceeded"
+                },
+                "io.eventuate.tram.spring.springwolf.sagas.application.CustomerCreditReserved": {
+                    "$ref": "#/components/messages/io.eventuate.tram.spring.springwolf.sagas.application.CustomerCreditReserved"
+                },
+                "io.eventuate.tram.spring.springwolf.sagas.application.CustomerNotFound": {
+                    "$ref": "#/components/messages/io.eventuate.tram.spring.springwolf.sagas.application.CustomerNotFound"
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "HeadersNotDocumented": {
+                "title": "HeadersNotDocumented",
+                "type": "object",
+                "properties": {
+                    
+                },
+                "description": "There can be headers, but they are not explicitly documented.",
+                "examples": [
+                    {
+                        
+                    }
+                ]
+            },
+            "io.eventuate.examples.common.money.Money": {
+                "title": "Money",
+                "type": "object",
+                "properties": {
+                    "amount": {
+                        "type": "number"
+                    }
+                },
+                "examples": [
+                    {
+                        "amount": 1.1
+                    }
+                ]
+            },
+            "io.eventuate.tram.spring.springwolf.sagas.application.CustomerCreditLimitExceeded": {
+                "title": "CustomerCreditLimitExceeded",
+                "type": "object",
+                "examples": [
+                    {
+                        
+                    }
+                ]
+            },
+            "io.eventuate.tram.spring.springwolf.sagas.application.CustomerCreditReserved": {
+                "title": "CustomerCreditReserved",
+                "type": "object",
+                "examples": [
+                    {
+                        
+                    }
+                ]
+            },
+            "io.eventuate.tram.spring.springwolf.sagas.application.CustomerNotFound": {
+                "title": "CustomerNotFound",
+                "type": "object",
+                "examples": [
+                    {
+                        
+                    }
+                ]
+            },
+            "io.eventuate.tram.spring.springwolf.sagas.application.ReserveCreditCommand": {
+                "title": "ReserveCreditCommand",
+                "type": "object",
+                "properties": {
+                    "customerId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "orderId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "orderTotal": {
+                        "$ref": "#/components/schemas/io.eventuate.examples.common.money.Money"
+                    }
+                },
+                "examples": [
+                    {
+                        "customerId": 0,
+                        "orderId": 0,
+                        "orderTotal": {
+                            "amount": 1.1
+                        }
+                    }
+                ]
+            }
+        },
+        "messages": {
+            "io.eventuate.tram.spring.springwolf.sagas.application.CustomerCreditLimitExceeded": {
+                "headers": {
+                    "$ref": "#/components/schemas/HeadersNotDocumented"
+                },
+                "payload": {
+                    "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+                    "schema": {
+                        "$ref": "#/components/schemas/io.eventuate.tram.spring.springwolf.sagas.application.CustomerCreditLimitExceeded"
+                    }
+                },
+                "name": "io.eventuate.tram.spring.springwolf.sagas.application.CustomerCreditLimitExceeded",
+                "title": "io.eventuate.tram.spring.springwolf.sagas.application.CustomerCreditLimitExceeded"
+            },
+            "io.eventuate.tram.spring.springwolf.sagas.application.CustomerCreditReserved": {
+                "headers": {
+                    "$ref": "#/components/schemas/HeadersNotDocumented"
+                },
+                "payload": {
+                    "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+                    "schema": {
+                        "$ref": "#/components/schemas/io.eventuate.tram.spring.springwolf.sagas.application.CustomerCreditReserved"
+                    }
+                },
+                "name": "io.eventuate.tram.spring.springwolf.sagas.application.CustomerCreditReserved",
+                "title": "io.eventuate.tram.spring.springwolf.sagas.application.CustomerCreditReserved"
+            },
+            "io.eventuate.tram.spring.springwolf.sagas.application.CustomerNotFound": {
+                "headers": {
+                    "$ref": "#/components/schemas/HeadersNotDocumented"
+                },
+                "payload": {
+                    "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+                    "schema": {
+                        "$ref": "#/components/schemas/io.eventuate.tram.spring.springwolf.sagas.application.CustomerNotFound"
+                    }
+                },
+                "name": "io.eventuate.tram.spring.springwolf.sagas.application.CustomerNotFound",
+                "title": "io.eventuate.tram.spring.springwolf.sagas.application.CustomerNotFound"
+            },
+            "io.eventuate.tram.spring.springwolf.sagas.application.ReserveCreditCommand": {
+                "headers": {
+                    "$ref": "#/components/schemas/HeadersNotDocumented"
+                },
+                "payload": {
+                    "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+                    "schema": {
+                        "$ref": "#/components/schemas/io.eventuate.tram.spring.springwolf.sagas.application.ReserveCreditCommand"
+                    }
+                },
+                "name": "io.eventuate.tram.spring.springwolf.sagas.application.ReserveCreditCommand",
+                "title": "io.eventuate.tram.spring.springwolf.sagas.application.ReserveCreditCommand"
+            }
+        }
+    },
+    "operations": {
+        "io.eventuate.tram.spring.springwolf.sagas.application.CreateOrderSaga-customerService-reserveCredit": {
+            "action": "send",
+            "channel": {
+                "$ref": "#/channels/customerService"
+            },
+            "messages": [
+                {
+                    "$ref": "#/channels/customerService/messages/io.eventuate.tram.spring.springwolf.sagas.application.ReserveCreditCommand"
+                }
+            ]
+        },
+        "receive-io.eventuate.tram.spring.springwolf.sagas.application.CreateOrderSaga-reply": {
+            "action": "receive",
+            "channel": {
+                "$ref": "#/channels/io.eventuate.tram.spring.springwolf.sagas.application.CreateOrderSaga-reply"
+            },
+            "messages": [
+                {
+                    "$ref": "#/channels/io.eventuate.tram.spring.springwolf.sagas.application.CreateOrderSaga-reply/messages/io.eventuate.tram.spring.springwolf.sagas.application.CustomerNotFound"
+                },
+                {
+                    "$ref": "#/channels/io.eventuate.tram.spring.springwolf.sagas.application.CreateOrderSaga-reply/messages/io.eventuate.tram.spring.springwolf.sagas.application.CustomerCreditReserved"
+                },
+                {
+                    "$ref": "#/channels/io.eventuate.tram.spring.springwolf.sagas.application.CreateOrderSaga-reply/messages/io.eventuate.tram.spring.springwolf.sagas.application.CustomerCreditLimitExceeded"
+                }
+            ]
+        }
+    }
+}
