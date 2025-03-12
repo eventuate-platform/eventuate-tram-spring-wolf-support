@@ -48,6 +48,36 @@ allprojects {
     }
 }
 
+tasks.register('copySpringwolfDocs') {
+    group = 'documentation'
+    description = 'Copies springwolf.json files from build directories to example-asyncapi-docs'
+
+    dependsOn("test")
+
+    doLast {
+        def targetDir = project.file('example-asyncapi-docs')
+        targetDir.deleteDir()
+        targetDir.mkdirs()
+
+        subprojects.each { subproject ->
+            if (!subproject.name.endsWith('-starter')) {
+                def springwolfFile = subproject.file('build/springwolf.json')
+                if (springwolfFile.exists()) {
+                    def shortName = subproject.name.replaceAll('eventuate-tram-springwolf-support-', '')
+                            .replaceAll('-springwolf-support', '')
+                    copy {
+                        from springwolfFile
+                        into targetDir
+                        rename { String fileName ->
+                            "${shortName}.json"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 gradle.projectsEvaluated {
     tasks.register('aggregateJavaDocs', Javadoc) {
         description = 'Aggregated Javadoc API documentation of all subprojects.'
