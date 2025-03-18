@@ -1,0 +1,94 @@
+{
+    "asyncapi": "3.0.0",
+    "info": {
+        "title": "eventuate-tram-springwolf-support-events",
+        "version": "1.0.0",
+        "x-generator": "springwolf"
+    },
+    "defaultContentType": "application/json",
+    "servers": {
+        "eventuate-consumer": {
+            "host": "localhost:29092",
+            "protocol": "kafka"
+        },
+        "eventuate-producer": {
+            "host": "jdbc:mysql://localhost/example_db",
+            "protocol": "eventuate-outbox"
+        }
+    },
+    "channels": {
+        "io.eventuate.exampleapp.events.common.Order": {
+            "address": "io.eventuate.exampleapp.events.common.Order",
+            "messages": {
+                "io.eventuate.exampleapp.events.common.OrderCreatedEvent": {
+                    "$ref": "#/components/messages/io.eventuate.exampleapp.events.common.OrderCreatedEvent"
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "HeadersNotDocumented": {
+                "title": "HeadersNotDocumented",
+                "type": "object",
+                "properties": {
+                    
+                },
+                "description": "There can be headers, but they are not explicitly documented.",
+                "examples": [
+                    {
+                        
+                    }
+                ]
+            },
+            "io.eventuate.exampleapp.events.common.OrderCreatedEvent": {
+                "title": "OrderCreatedEvent",
+                "type": "object",
+                "properties": {
+                    "customerId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "orderId": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "examples": [
+                    {
+                        "customerId": 0,
+                        "orderId": 0
+                    }
+                ]
+            }
+        },
+        "messages": {
+            "io.eventuate.exampleapp.events.common.OrderCreatedEvent": {
+                "headers": {
+                    "$ref": "#/components/schemas/HeadersNotDocumented"
+                },
+                "payload": {
+                    "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+                    "schema": {
+                        "$ref": "#/components/schemas/io.eventuate.exampleapp.events.common.OrderCreatedEvent"
+                    }
+                },
+                "name": "io.eventuate.exampleapp.events.common.OrderCreatedEvent",
+                "title": "io.eventuate.exampleapp.events.common.OrderCreatedEvent"
+            }
+        }
+    },
+    "operations": {
+        "io.eventuate.exampleapp.events.orderpublisher.OrderEventPublisherImpl": {
+            "action": "send",
+            "channel": {
+                "$ref": "#/channels/io.eventuate.exampleapp.events.common.Order"
+            },
+            "messages": [
+                {
+                    "$ref": "#/channels/io.eventuate.exampleapp.events.common.Order/messages/io.eventuate.exampleapp.events.common.OrderCreatedEvent"
+                }
+            ]
+        }
+    }
+}

@@ -8,8 +8,6 @@ import io.eventuate.tram.events.subscriber.annotations.EventuateDomainEventHandl
 
 public class CustomerEventConsumer {
 
-
-
   @EventuateDomainEventHandler(subscriberId = "orderServiceEventsConsumer", channel = "io.eventuate.exampleapp.events.common.Customer")
   public void handleCustomerCreatedEvent(DomainEventEnvelope<CustomerCreatedEvent> domainEventEnvelope) {
 

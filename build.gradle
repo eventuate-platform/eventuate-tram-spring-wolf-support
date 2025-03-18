@@ -63,15 +63,19 @@ tasks.register('copySpringwolfDocs') {
 
         subprojects.each { subproject ->
             if (!subproject.name.endsWith('-starter')) {
-                def springwolfFile = subproject.file('build/springwolf.json')
-                if (springwolfFile.exists()) {
-                    def shortName = subproject.name.replaceAll('eventuate-tram-springwolf-support-', '')
-                            .replaceAll('-springwolf-support', '')
-                    copy {
-                        from springwolfFile
-                        into targetDir
-                        rename { String fileName ->
-                            "${shortName}.json"
+                def springwolfFiles = subproject.fileTree(dir: 'build', include: 'springwolf*.json')
+                springwolfFiles.each { springwolfFile ->
+                    if (springwolfFile.exists()) {
+                        def shortName = subproject.name.replaceAll('eventuate-tram-springwolf-support-', '')
+                                .replaceAll('-springwolf-support', '')
+                        def originalFileName = springwolfFile.name
+                        def suffix = originalFileName.replace('springwolf', '')
+                        copy {
+                            from springwolfFile
+                            into targetDir
+                            rename { String fileName ->
+                                "${shortName}${suffix}"
+                            }
                         }
                     }
                 }

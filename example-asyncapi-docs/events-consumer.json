@@ -1,0 +1,88 @@
+{
+    "asyncapi": "3.0.0",
+    "info": {
+        "title": "eventuate-tram-springwolf-support-events",
+        "version": "1.0.0",
+        "x-generator": "springwolf"
+    },
+    "defaultContentType": "application/json",
+    "servers": {
+        "eventuate-consumer": {
+            "host": "localhost:29092",
+            "protocol": "kafka"
+        },
+        "eventuate-producer": {
+            "host": "jdbc:mysql://localhost/example_db",
+            "protocol": "eventuate-outbox"
+        }
+    },
+    "channels": {
+        "io.eventuate.exampleapp.events.common.Customer": {
+            "address": "io.eventuate.exampleapp.events.common.Customer",
+            "messages": {
+                "io.eventuate.exampleapp.events.common.CustomerCreatedEvent": {
+                    "$ref": "#/components/messages/io.eventuate.exampleapp.events.common.CustomerCreatedEvent"
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "HeadersNotDocumented": {
+                "title": "HeadersNotDocumented",
+                "type": "object",
+                "properties": {
+                    
+                },
+                "description": "There can be headers, but they are not explicitly documented.",
+                "examples": [
+                    {
+                        
+                    }
+                ]
+            },
+            "io.eventuate.exampleapp.events.common.CustomerCreatedEvent": {
+                "title": "CustomerCreatedEvent",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    }
+                },
+                "examples": [
+                    {
+                        "id": "string"
+                    }
+                ]
+            }
+        },
+        "messages": {
+            "io.eventuate.exampleapp.events.common.CustomerCreatedEvent": {
+                "headers": {
+                    "$ref": "#/components/schemas/HeadersNotDocumented"
+                },
+                "payload": {
+                    "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+                    "schema": {
+                        "$ref": "#/components/schemas/io.eventuate.exampleapp.events.common.CustomerCreatedEvent"
+                    }
+                },
+                "name": "io.eventuate.exampleapp.events.common.CustomerCreatedEvent",
+                "title": "io.eventuate.exampleapp.events.common.CustomerCreatedEvent"
+            }
+        }
+    },
+    "operations": {
+        "io.eventuate.exampleapp.events.consumer.CustomerEventConsumer.handleCustomerCreatedEvent": {
+            "action": "receive",
+            "channel": {
+                "$ref": "#/channels/io.eventuate.exampleapp.events.common.Customer"
+            },
+            "messages": [
+                {
+                    "$ref": "#/channels/io.eventuate.exampleapp.events.common.Customer/messages/io.eventuate.exampleapp.events.common.CustomerCreatedEvent"
+                }
+            ]
+        }
+    }
+}
