@@ -1,4 +1,4 @@
-package io.eventuate.tram.spring.springwolf.events;
+package io.eventuate.exampleapp.events.common;
 
 
 public abstract class AbstractCustomerEvent implements CustomerEvent {

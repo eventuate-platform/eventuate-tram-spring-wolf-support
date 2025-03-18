@@ -3,6 +3,7 @@ package io.eventuate.tram.springwolf.gradle
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.*
+import org.gradle.api.file.FileCollection
 
 abstract class ValidateAsyncAPITask extends Exec {
     ValidateAsyncAPITask() {
@@ -10,10 +11,10 @@ abstract class ValidateAsyncAPITask extends Exec {
         group = 'verification'
     }
 
-    @InputFile
+    @InputFiles
     @PathSensitive(PathSensitivity.NONE)
-    File getSpecificationFile() {
-        return project.file('build/springwolf.json')
+    FileCollection getSpecificationFiles() {
+        return project.fileTree(dir: 'build', include: 'springwolf*.json')
     }
 
     @OutputFile
@@ -23,12 +24,20 @@ abstract class ValidateAsyncAPITask extends Exec {
 
     @Override
     protected void exec() {
-        if (!getSpecificationFile().exists()) {
-            throw new IllegalStateException("springwolf.json file not found in ${getSpecificationFile()}")
+        def files = getSpecificationFiles()
+        if (files.empty) {
+            throw new IllegalStateException("No springwolf*.json files found in build directory")
         }
+
         workingDir = project.projectDir
-        commandLine 'npx', '@asyncapi/cli', 'validate', getSpecificationFile().absolutePath
-        super.exec()
+        def baseCommand = ['npx', '@asyncapi/cli', 'validate']
+
+        files.each { file ->
+            logger.info("Validating AsyncAPI specification: ${file.absolutePath}")
+            commandLine = baseCommand + [file.absolutePath]
+            super.exec()
+        }
+
         getOutputFile().text = System.currentTimeMillis()
     }
 }

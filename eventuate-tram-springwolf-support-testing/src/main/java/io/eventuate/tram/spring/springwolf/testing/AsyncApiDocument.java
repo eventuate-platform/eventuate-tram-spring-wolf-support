@@ -23,17 +23,26 @@ public class AsyncApiDocument {
   private Components components;
 
   public static AsyncApiDocument getSpringWolfDoc() {
+    return getSpringWolfDoc("springwolf.json");
+  }
+
+  public static AsyncApiDocument getSpringWolfDoc(String fileName) {
     var s = RestAssured.get("/springwolf/docs")
         .then()
         .statusCode(200)
         .extract().response().prettyPrint();
 
+    AsyncApiDocument asyncApiDocument;
     try {
-      Files.writeString(Paths.get("build/springwolf.json"), s);
-      return new ObjectMapper().readValue(s, AsyncApiDocument.class);
+      Files.writeString(Paths.get("build/" + fileName), s);
+      asyncApiDocument = new ObjectMapper().readValue(s, AsyncApiDocument.class);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+    assertThat(asyncApiDocument.getVersion())
+        .as("AsyncAPI version should be 3.0.0")
+        .isEqualTo("3.0.0");
+    return asyncApiDocument;
   }
 
   public String getVersion() {
@@ -66,7 +75,8 @@ public class AsyncApiDocument {
   }
 
   public void assertReceivesMessageAndReplies(String subscriberId, String channel, String messageType, Set<String> replyTypes) {
-    assertMessagesDefined(add(replyTypes, messageType));;
+    assertMessagesDefined(add(replyTypes, messageType));
+    ;
     assertReceivesMessage(subscriberId, channel, messageType);
     Map<String, Operation> operations = getOperations();
     Operation operation = operations.get(subscriberId);
