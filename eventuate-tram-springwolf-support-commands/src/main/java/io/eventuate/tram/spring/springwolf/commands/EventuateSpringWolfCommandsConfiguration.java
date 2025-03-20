@@ -19,4 +19,6 @@ public class EventuateSpringWolfCommandsConfiguration {
     public OperationsFromCommandHandlerScanner operationsFromCommandHandlerScanner(EventuateCommandDispatcher eventuateCommandDispatcher) {
         return new OperationsFromCommandHandlerScanner(eventuateCommandDispatcher);
     }
+
+
 }
