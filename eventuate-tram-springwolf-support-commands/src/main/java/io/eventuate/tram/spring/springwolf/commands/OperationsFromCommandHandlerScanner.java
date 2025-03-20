@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 
 import static io.eventuate.tram.spring.springwolf.core.SetUtil.add;
 
-@Component
 public class OperationsFromCommandHandlerScanner implements EventuateTramOperationsScanner {
 
   private final EventuateCommandDispatcher eventuateCommandDispatcher;

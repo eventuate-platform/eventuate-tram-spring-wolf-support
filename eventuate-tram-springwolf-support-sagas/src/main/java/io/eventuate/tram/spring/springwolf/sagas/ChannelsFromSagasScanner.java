@@ -5,16 +5,12 @@ import io.eventuate.tram.spring.springwolf.core.ElementsWithClasses;
 import io.eventuate.tram.spring.springwolf.core.EventuateTramChannelsScanner;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toSet;
-
-@Component
 public class ChannelsFromSagasScanner implements EventuateTramChannelsScanner {
 
   private final List<SagaProxyInfo> sagas;
