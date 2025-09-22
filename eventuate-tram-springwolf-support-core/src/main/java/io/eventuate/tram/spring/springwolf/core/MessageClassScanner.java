@@ -3,6 +3,7 @@ package io.eventuate.tram.spring.springwolf.core;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.RegexPatternTypeFilter;
 
+import java.lang.reflect.Modifier;
 import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -14,7 +15,7 @@ public class MessageClassScanner {
       throw new IllegalArgumentException("eventBaseClass cannot be null");
     }
 
-    if (java.lang.reflect.Modifier.isFinal(eventBaseClass.getModifiers())) {
+    if (Modifier.isFinal(eventBaseClass.getModifiers())) {
       System.out.println("[DEBUG_LOG] Class " + eventBaseClass.getName() + " is final, cannot have implementations");
       return Set.of();
     }
@@ -49,7 +50,7 @@ public class MessageClassScanner {
   }
 
   private static boolean isConcreteImplementor(Class<?> eventBaseClass, Class<?> clazz) {
-    return !clazz.equals(eventBaseClass) && !clazz.isInterface() && !java.lang.reflect.Modifier.isAbstract(clazz.getModifiers())
+    return !clazz.equals(eventBaseClass) && !clazz.isInterface() && !Modifier.isAbstract(clazz.getModifiers())
         && eventBaseClass.isAssignableFrom(clazz);
   }
 }

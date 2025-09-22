@@ -7,7 +7,7 @@ import io.restassured.RestAssured;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,7 +34,7 @@ public class AsyncApiDocument {
 
     AsyncApiDocument asyncApiDocument;
     try {
-      Files.writeString(Paths.get("build/" + fileName), s);
+      Files.writeString(Path.of("build/" + fileName), s);
       asyncApiDocument = new ObjectMapper().readValue(s, AsyncApiDocument.class);
     } catch (IOException e) {
       throw new RuntimeException(e);

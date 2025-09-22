@@ -30,7 +30,7 @@ public class TypeParameterExtractor {
 
     Class<?> paramType = (Class<?>) typeArg;
     if (!expectedClass.isAssignableFrom(paramType)) {
-      throw new IllegalArgumentException(String.format("Parameter type must be assignable to %s", expectedClass.getSimpleName()));
+      throw new IllegalArgumentException("Parameter type must be assignable to %s".formatted(expectedClass.getSimpleName()));
     }
 
     return (Class<? extends T>) paramType;

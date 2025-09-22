@@ -15,7 +15,6 @@ import io.github.springwolf.asyncapi.v3.model.operation.Operation;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationAction;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationReply;
 import io.github.springwolf.asyncapi.v3.model.operation.OperationReplyAddress;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -29,7 +28,6 @@ public class OperationsFromCommandHandlerScanner implements EventuateTramOperati
 
   private final EventuateCommandDispatcher eventuateCommandDispatcher;
 
-  @Autowired
   public OperationsFromCommandHandlerScanner(EventuateCommandDispatcher eventuateCommandDispatcher) {
     this.eventuateCommandDispatcher = eventuateCommandDispatcher;
   }

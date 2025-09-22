@@ -2,6 +2,7 @@ apply plugin: 'io.eventuate.tram.springwolf.validate-asyncapi'
 
 dependencies {
     implementation project(":eventuate-tram-springwolf-support-core")
+    implementation "org.apache.httpcomponents.client5:httpclient5:5.4.4"
     compileOnly "io.eventuate.tram.core:eventuate-tram-events:$eventuateTramVersion"
     compileOnly "io.eventuate.tram.core:eventuate-tram-spring-events-starter:$eventuateTramVersion"
 
@@ -14,4 +15,7 @@ dependencies {
     testImplementation "io.eventuate.util:eventuate-util-test:$eventuateUtilVersion"
 
     testRuntimeOnly "io.github.springwolf:springwolf-ui:$springwolfVersion"
+}
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
 }

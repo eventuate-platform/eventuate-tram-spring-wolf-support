@@ -4,8 +4,13 @@ dependencies {
     api "io.github.springwolf:springwolf-core:$springwolfVersion"
     implementation "org.springframework.boot:spring-boot-starter:$springBootVersion"
 
+    implementation "org.apache.httpcomponents.client5:httpclient5:5.4.4"
+
     testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
     testImplementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
     testImplementation "io.rest-assured:rest-assured"
     testImplementation "io.eventuate.util:eventuate-util-test:$eventuateUtilVersion"
+}
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
 }

@@ -5,6 +5,7 @@ dependencies {
 
 
     implementation "org.springframework.boot:spring-boot-starter:$springBootVersion"
+    implementation "org.apache.httpcomponents.client5:httpclient5:5.4.4"
     compileOnly "io.eventuate.tram.sagas:eventuate-tram-sagas-orchestration-simple-dsl:$eventuateTramSagasVersion"
 
     testImplementation "io.eventuate.tram.sagas:eventuate-tram-sagas-orchestration-simple-dsl:$eventuateTramSagasVersion"
@@ -19,4 +20,7 @@ dependencies {
     testImplementation "io.eventuate.util:eventuate-util-test:$eventuateUtilVersion"
 
     testRuntimeOnly "io.github.springwolf:springwolf-ui:$springwolfVersion"
+}
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
 }

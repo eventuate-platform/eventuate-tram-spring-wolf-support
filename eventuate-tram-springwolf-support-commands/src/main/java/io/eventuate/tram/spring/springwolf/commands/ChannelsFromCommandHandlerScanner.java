@@ -11,7 +11,6 @@ import io.eventuate.tram.spring.springwolf.core.MessageClassScanner;
 import io.github.springwolf.asyncapi.v3.model.channel.ChannelObject;
 import io.github.springwolf.asyncapi.v3.model.channel.message.Message;
 import io.github.springwolf.asyncapi.v3.model.channel.message.MessageReference;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -24,7 +23,6 @@ public class ChannelsFromCommandHandlerScanner implements EventuateTramChannelsS
 
   private final EventuateCommandDispatcher eventuateCommandDispatcher;
 
-  @Autowired
   public ChannelsFromCommandHandlerScanner(EventuateCommandDispatcher eventuateCommandDispatcher) {
     this.eventuateCommandDispatcher = eventuateCommandDispatcher;
   }
