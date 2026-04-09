@@ -1,0 +1,14 @@
+dependencies {
+    testImplementation project(":eventuate-tram-springwolf-support-starter")
+    testImplementation project(":eventuate-tram-springwolf-support-testing")
+    testImplementation "io.eventuate.tram.core:eventuate-tram-spring-events-publisher-starter:$eventuateTramVersion"
+    testImplementation "io.eventuate.tram.core:eventuate-tram-spring-in-memory:$eventuateTramVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    testImplementation "io.rest-assured:rest-assured"
+
+    testRuntimeOnly "io.github.springwolf:springwolf-ui:$springwolfVersion"
+}
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+}

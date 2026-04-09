@@ -1,3 +1,4 @@
 io.eventuate.tram.spring.springwolf.autoconfigure.EventuateSpringWolfCommandsAutoConfiguration
 io.eventuate.tram.spring.springwolf.autoconfigure.EventuateSpringWolfEventsAutoConfiguration
+io.eventuate.tram.spring.springwolf.autoconfigure.EventuateSpringWolfEventsSubscriberAutoConfiguration
 io.eventuate.tram.spring.springwolf.autoconfigure.EventuateSpringWolfSagasAutoConfiguration

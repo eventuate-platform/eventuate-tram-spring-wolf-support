@@ -1,10 +1,12 @@
 dependencies {
     implementation project(":eventuate-tram-springwolf-support-commands")
-    implementation project(":eventuate-tram-springwolf-support-events")
+    implementation project(":eventuate-tram-springwolf-support-events-publisher")
+    implementation project(":eventuate-tram-springwolf-support-events-subscriber")
     implementation project(":eventuate-tram-springwolf-support-sagas")
     implementation "io.github.springwolf:springwolf-core:$springwolfVersion"
 
     compileOnly "io.eventuate.tram.core:eventuate-tram-events:$eventuateTramVersion"
+    compileOnly "io.eventuate.tram.core:eventuate-tram-spring-events-starter:$eventuateTramVersion"
     compileOnly "io.eventuate.tram.core:eventuate-tram-commands:$eventuateTramVersion"
     compileOnly "io.eventuate.tram.sagas:eventuate-tram-sagas-orchestration-simple-dsl:$eventuateTramSagasVersion"
 
