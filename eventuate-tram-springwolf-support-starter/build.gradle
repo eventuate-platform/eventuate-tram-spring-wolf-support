@@ -5,10 +5,9 @@ dependencies {
     implementation project(":eventuate-tram-springwolf-support-sagas")
     implementation "io.github.springwolf:springwolf-core:$springwolfVersion"
 
-    compileOnly "io.eventuate.tram.core:eventuate-tram-events:$eventuateTramVersion"
     compileOnly "io.eventuate.tram.core:eventuate-tram-spring-events-starter:$eventuateTramVersion"
-    compileOnly "io.eventuate.tram.core:eventuate-tram-commands:$eventuateTramVersion"
-    compileOnly "io.eventuate.tram.sagas:eventuate-tram-sagas-orchestration-simple-dsl:$eventuateTramSagasVersion"
+    compileOnly "io.eventuate.tram.core:eventuate-tram-spring-commands-starter:$eventuateTramVersion"
+    compileOnly "io.eventuate.tram.sagas:eventuate-tram-sagas-spring-orchestration-simple-dsl-starter:$eventuateTramSagasVersion"
 
     implementation "org.springframework.boot:spring-boot-starter:$springBootVersion"
 
