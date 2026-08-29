@@ -7,6 +7,7 @@ workflows:
       - eventuate-gradle-build-and-test/build-and-test:
           name: build-and-publish
           java_version_to_install: "17"
+          machine_image: "ubuntu-2404:2026.05.1"
           context:
             - publish
           script: |
