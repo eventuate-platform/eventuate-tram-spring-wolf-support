@@ -39,8 +39,8 @@ public class EventuateTramSpringWolfSagasTest {
     AsyncApiDocument doc = AsyncApiDocument.getSpringWolfDoc();
 
     assertThat(doc.getVersion())
-        .as("AsyncAPI version should be 3.0.0")
-        .isEqualTo("3.0.0");
+        .as("AsyncAPI version should be 3.1.0")
+        .isEqualTo("3.1.0");
 
     doc.assertSendsMessage(CreateOrderSaga.class.getName() + "-customerService-reserveCredit",
         "customerService",

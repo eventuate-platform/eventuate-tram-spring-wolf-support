@@ -44,8 +44,8 @@ public class EventuateTramSpringWolfCommandsTest {
     AsyncApiDocument doc = AsyncApiDocument.getSpringWolfDoc();
 
     assertThat(doc.getVersion())
-        .as("AsyncAPI version should be 3.0.0")
-        .isEqualTo("3.0.0");
+        .as("AsyncAPI version should be 3.1.0")
+        .isEqualTo("3.1.0");
 
     doc.assertReceivesMessageAndReplies(
         CustomerCommandHandler.class.getName() + ".reserveCredit",
@@ -73,8 +73,8 @@ public class EventuateTramSpringWolfCommandsTest {
         .satisfies(messages -> {
             var message = messages.get(ReserveCreditCommand.class.getName());
             assertThat(message.getPayload().getSchemaFormat())
-                .as("Schema format should be AsyncAPI 3.0.0")
-                .isEqualTo("application/vnd.aai.asyncapi+json;version=3.0.0");
+                .as("Schema format should be AsyncAPI 3.1.0")
+                .isEqualTo("application/vnd.aai.asyncapi+json;version=3.1.0");
             assertThat(message.getPayload().getSchema())
                 .as("Message schema should reference the schema definition")
                 .extracting("ref")

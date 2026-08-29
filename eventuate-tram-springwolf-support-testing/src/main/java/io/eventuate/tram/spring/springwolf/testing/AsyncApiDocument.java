@@ -2,7 +2,7 @@ package io.eventuate.tram.spring.springwolf.testing;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import io.restassured.RestAssured;
 
 import java.io.IOException;
@@ -35,13 +35,13 @@ public class AsyncApiDocument {
     AsyncApiDocument asyncApiDocument;
     try {
       Files.writeString(Path.of("build/" + fileName), s);
-      asyncApiDocument = new ObjectMapper().readValue(s, AsyncApiDocument.class);
+      asyncApiDocument = JsonMapper.builder().build().readValue(s, AsyncApiDocument.class);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
     assertThat(asyncApiDocument.getVersion())
-        .as("AsyncAPI version should be 3.0.0")
-        .isEqualTo("3.0.0");
+        .as("AsyncAPI version should be 3.1.0")
+        .isEqualTo("3.1.0");
     return asyncApiDocument;
   }
 

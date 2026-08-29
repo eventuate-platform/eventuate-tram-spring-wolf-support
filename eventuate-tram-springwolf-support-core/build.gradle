@@ -4,11 +4,11 @@ dependencies {
     api "io.github.springwolf:springwolf-core:$springwolfVersion"
     implementation "org.springframework.boot:spring-boot-starter:$springBootVersion"
 
-    implementation "org.apache.httpcomponents.client5:httpclient5:5.4.4"
+    implementation "org.apache.httpcomponents.client5:httpclient5:$httpclient5Version"
 
-    testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
-    testImplementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-    testImplementation "io.rest-assured:rest-assured"
+    testImplementation "org.springframework.boot:spring-boot-starter-webmvc-test:$springBootVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-webmvc:$springBootVersion"
+    testImplementation "io.rest-assured:rest-assured:$restAssuredVersion"
     testImplementation "io.eventuate.util:eventuate-util-test:$eventuateUtilVersion"
 }
 tasks.withType(Test).configureEach {

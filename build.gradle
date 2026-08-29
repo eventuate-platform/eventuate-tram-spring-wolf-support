@@ -37,7 +37,6 @@ allprojects {
             }
         }
         dependencies {
-            testImplementation platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
             testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
             testRuntimeOnly "org.junit.platform:junit-platform-launcher:$junitPlatformLauncherVersion"
         }

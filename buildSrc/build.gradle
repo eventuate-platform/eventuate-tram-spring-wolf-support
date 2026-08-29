@@ -10,11 +10,4 @@ repositories {
 dependencies {
     implementation gradleApi()
     implementation localGroovy()
-
-    testImplementation 'org.spockframework:spock-core:2.3-groovy-3.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
-}
-
-test {
-    useJUnitPlatform()
 }

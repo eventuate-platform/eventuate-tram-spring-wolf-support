@@ -1,11 +1,11 @@
 dependencies {
     api project(":eventuate-tram-springwolf-support-core")
 
-    implementation "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:$jacksonAnnotationsVersion"
     implementation "org.assertj:assertj-core:$assertjVersion"
     implementation "io.rest-assured:rest-assured:$restAssuredVersion"
-    implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
-    implementation "org.apache.httpcomponents.client5:httpclient5:5.4.4"
+    implementation "tools.jackson.core:jackson-databind:$jacksonVersion"
+    implementation "org.apache.httpcomponents.client5:httpclient5:$httpclient5Version"
 
 }
 tasks.withType(Test).configureEach {

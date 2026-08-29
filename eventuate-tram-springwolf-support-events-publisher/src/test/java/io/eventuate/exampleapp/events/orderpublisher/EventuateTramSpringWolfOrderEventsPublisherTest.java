@@ -43,8 +43,8 @@ public class EventuateTramSpringWolfOrderEventsPublisherTest {
     AsyncApiDocument doc = AsyncApiDocument.getSpringWolfDoc("springwolf-order-publisher.json");
 
     assertThat(doc.getVersion())
-        .as("AsyncAPI version should be 3.0.0")
-        .isEqualTo("3.0.0");
+        .as("AsyncAPI version should be 3.1.0")
+        .isEqualTo("3.1.0");
 
     doc.assertSendsMessage(CUSTOMER_EVENT_PUBLISHER, ORDER_CHANNEL, ORDER_CREATED_EVENT);
   }

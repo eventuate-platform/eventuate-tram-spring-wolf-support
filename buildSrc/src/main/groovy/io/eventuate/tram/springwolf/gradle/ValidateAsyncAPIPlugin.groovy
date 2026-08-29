@@ -30,7 +30,7 @@ abstract class ValidateAsyncAPITask extends Exec {
         }
 
         workingDir = project.projectDir
-        def baseCommand = ['npx', '@asyncapi/cli', 'validate']
+        def baseCommand = ['npx', '@asyncapi/cli@6.0.2', 'validate']
 
         files.each { file ->
             logger.info("Validating AsyncAPI specification: ${file.absolutePath}")
